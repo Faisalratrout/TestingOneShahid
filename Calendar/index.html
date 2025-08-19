@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>My Calendar</h1>
+            <div class="header-controls">
+                <button id="today-btn" class="btn btn-primary">Today</button>
+                <button id="add-event-btn" class="btn btn-primary">Add Event</button>
+                <button id="clear-events-btn" class="btn btn-secondary">Clear All Events</button>
+            </div>
+        </header>
+        
+        <main class="app-main">
+            <div id="calendar-container" class="calendar-section"></div>
+            
+            <aside class="sidebar">
+                <div id="event-form-container" class="event-form-section" style="display: none;">
+                </div>
+                
+                <div class="event-filters">
+                    <h3>Filter Events</h3>
+                    <div class="filter-controls">
+                        <input type="text" id="search-events" placeholder="Search events...">
+                        <select id="filter-type">
+                            <option value="all">All Events</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="upcoming-events">
+                    <h3>Upcoming Events</h3>
+                    <div id="events-list" class="events-list"></div>
+                </div>
+                
+                <div class="data-management">
+                    <h3>Data Management</h3>
+                    <div class="data-controls">
+                        <button id="export-events" class="btn btn-secondary">Export Events</button>
+                        <button id="import-events" class="btn btn-secondary">Import Events</button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;">
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Notification container -->
+    <div id="notification-container"></div>
+
+    <script src="dataUtils.js"></script>
+    <script src="event.js"></script>
+    <script src="eventFilter.js"></script>
+    <script src="events.js"></script>
+    <script src="calendar.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

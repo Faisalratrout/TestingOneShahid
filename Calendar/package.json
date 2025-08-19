@@ -1,0 +1,56 @@
+{
+  "name": "calendar-app",
+  "version": "1.0.0",
+  "description": "A comprehensive calendar application with event management, filtering, and data persistence",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8080",
+    "build": "echo 'No build process needed for vanilla JS'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linting configured'",
+    "serve": "python -m http.server"
+  },
+  "keywords": [
+    "calendar",
+    "events",
+    "javascript",
+    "vanilla-js",
+    "spa",
+    "local-storage",
+    "responsive"
+  ],
+  "author": "Faisal",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Faisalratrout/internshipMBC.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Faisalratrout/internshipMBC/issues"
+  },
+  "homepage": "https://github.com/Faisalratrout/internshipMBC#readme",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "files": [
+    "*.html",
+    "*.css",
+    "*.js",
+    "README.md"
+  ],
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "config": {
+    "port": 8000
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "name": "calendar-mobile-app",
+  "version": "1.0.0",
+  "description": "A comprehensive React Native calendar application with event management, filtering, and data persistence",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build:android": "expo build:android",
+    "build:ios": "expo build:ios",
+    "eject": "expo eject",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "dependencies": {
+    "expo": "~50.0.0",
+    "react": "18.2.0",
+    "react-native": "0.73.0",
+    "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/stack": "^6.3.20",
+    "@react-navigation/bottom-tabs": "^6.5.11",
+    "react-native-screens": "~3.29.0",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-gesture-handler": "~2.14.0",
+    "react-native-vector-icons": "^10.0.3",
+    "expo-file-system": "~16.0.6",
+    "expo-sharing": "~12.0.1",
+    "expo-document-picker": "~11.10.1",
+    "expo-notifications": "~0.27.6",
+    "expo-calendar": "~12.8.1",
+    "expo-constants": "~15.4.5",
+    "react-native-date-picker": "^4.3.3",
+    "react-native-modal": "^13.0.1",
+    "react-native-paper": "^5.12.3",
+    "react-native-calendars": "^1.1301.0",
+    "react-native-super-grid": "^4.9.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-react": "^7.23.3",
+    "@types/react": "~18.2.45",
+    "@types/react-native": "~0.72.8",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-native": "^4.1.0",
+    "jest": "^29.7.0",
+    "metro-react-native-babel-preset": "^0.77.0",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "calendar",
+    "events",
+    "mobile",
+    "ios",
+    "android",
+    "scheduling",
+    "productivity"
+  ],
+  "author": "Faisal",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Faisalratrout/internshipMBC.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Faisalratrout/internshipMBC/issues"
+  },
+  "homepage": "https://github.com/Faisalratrout/internshipMBC#readme",
+  "private": true,
+  "expo": {
+    "name": "Calendar Mobile App",
+    "slug": "calendar-mobile-app",
+    "version": "1.0.0",
+    "platforms": ["ios", "android", "web"],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.faisal.calendarmobileapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.faisal.calendarmobileapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "permissions": [
+      "CALENDAR",
+      "NOTIFICATIONS",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE"
+    ]
+  }
+}

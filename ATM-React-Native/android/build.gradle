@@ -1,0 +1,32 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext {
+        buildToolsVersion = "29.0.3"
+        minSdkVersion = 16
+        compileSdkVersion = 29
+        targetSdkVersion = 29
+    }
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.1.0")
+        
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() {
+            content {
+                includeModule("com.yqritc", "Android-ScalableVideoView")
+            }
+        }
+        maven { url "https://www.jitpack.io" }
+    }
+}
