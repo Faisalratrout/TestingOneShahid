@@ -1,0 +1,22 @@
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #6c757d;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+  border: 2px dashed #dee2e6;
+  margin: 20px 0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-style: italic;
+  font-weight: 500;
+}

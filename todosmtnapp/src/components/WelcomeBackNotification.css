@@ -1,0 +1,77 @@
+.welcome-notification {
+  position: fixed;
+  top: clamp(70px, 10vh, 80px);
+  right: clamp(16px, 3vw, 24px);
+  left: clamp(16px, 3vw, auto);
+  z-index: 1001;
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.notification-content {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: clamp(16px, 2.5vw, 24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: clamp(300px, 50vw, 350px);
+  min-width: clamp(280px, 45vw, 300px);
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.greeting {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  line-height: 1.4;
+}
+
+.task-info {
+  color: #667eea;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  font-weight: 500;
+}
+
+.close-notification {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.close-notification:hover {
+  background: rgba(108, 117, 125, 0.1);
+  color: #495057;
+}
+
+
