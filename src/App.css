@@ -1,4 +1,4 @@
-/* Day 1: Basic app styles */
+/* Day 1 Basic app styles */
 .App {
   text-align: center;
 }
@@ -12,7 +12,6 @@
   color: #666;
 }
 
-/* Keep some of the original spinning logo for fun */
 .App-logo {
   height: 40vmin;
   pointer-events: none;

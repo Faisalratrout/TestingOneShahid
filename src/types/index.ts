@@ -65,6 +65,8 @@ export interface ProductsState {
   };
   sortBy: 'name' | 'price' | 'rating' | 'newest';
   sortOrder: 'asc' | 'desc';
+  categories: string[];
+  searchTerm: string;
 }
 
 export interface CartState {

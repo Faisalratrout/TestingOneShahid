@@ -1,0 +1,135 @@
+/* Day 2 Dashboard Styling */
+.dashboard {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.dashboard-header {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header h1 {
+  color: #333;
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.welcome-text {
+  color: #666;
+  font-weight: 500;
+}
+
+.logout-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #c82333;
+}
+
+.dashboard-nav {
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+  position: sticky;
+  top: 81px; 
+  z-index: 99;
+}
+
+.nav-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-button:hover {
+  color: #007bff;
+  background: #f8f9fa;
+}
+
+.nav-button.active {
+  color: #007bff;
+  border-bottom-color: #007bff;
+  background: #f8f9ff;
+}
+
+.nav-count {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: normal;
+}
+
+.dashboard-main {
+  min-height: calc(100vh - 162px);
+}
+
+.tab-content {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tab-content h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.tab-content p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.day-info {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.day-info p {
+  margin: 0;
+  font-weight: 500;
+}

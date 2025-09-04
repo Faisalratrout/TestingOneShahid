@@ -45,7 +45,7 @@ export const verifyToken = createAsyncThunk(
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('authToken'), // Check if user was already logged in
+  token: localStorage.getItem('authToken'), 
   isLoading: false,
   error: null,
 };
@@ -58,7 +58,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.error = null;
-      localStorage.removeItem('authToken'); // Clean up localStorage too
+      localStorage.removeItem('authToken'); 
     },
     clearError: (state) => {
       state.error = null;
@@ -66,7 +66,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login cases
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -80,7 +79,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || 'Login failed';
       })
-      // Token verification cases
       .addCase(verifyToken.pending, (state) => {
         state.isLoading = true;
       })
