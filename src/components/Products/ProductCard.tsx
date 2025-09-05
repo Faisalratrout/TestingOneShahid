@@ -1,22 +1,47 @@
-// Day 2 Product Card Component
-// Displays individual product information in a card layout
+// Enhanced ProductCard component with cart functionality
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../types';
+import { addToCart, updateQuantity, removeFromCart, openCart } from '../../store/slices/cartSlice';
+import { RootState, AppDispatch } from '../../store';
 import './ProductCard.css';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (productId: string) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  
+  // Find if this product is in the cart
+  const cartItem = cartItems.find(item => item.product.id === product.id);
+  const quantity = cartItem ? cartItem.quantity : 0;
+
   const handleAddToCart = () => {
-    if (onAddToCart) {
-      onAddToCart(product.id);
+    dispatch(addToCart(product));
+  };
+
+  const handleIncreaseQuantity = () => {
+    if (cartItem) {
+      dispatch(updateQuantity({ id: cartItem.id, quantity: cartItem.quantity + 1 }));
     } else {
-      // Placeholder for Day 2
-      alert(`Added ${product.name} to cart! (Cart functionality coming later)`);
+      dispatch(addToCart(product));
     }
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (cartItem) {
+      if (cartItem.quantity > 1) {
+        dispatch(updateQuantity({ id: cartItem.id, quantity: cartItem.quantity - 1 }));
+      } else {
+        dispatch(removeFromCart(cartItem.id));
+      }
+    }
+  };
+
+  const handleViewCart = () => {
+    dispatch(openCart());
   };
 
   const formatPrice = (price: number) => {
@@ -47,11 +72,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
           src={product.imageUrl} 
           alt={product.name}
           onError={(e) => {
-            // Fallback image if the URL fails to load
             e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400';
           }}
         />
         {!product.inStock && <div className="out-of-stock-badge">Out of Stock</div>}
+        {quantity > 0 && <div className="in-cart-badge">{quantity} in cart</div>}
       </div>
       
       <div className="product-info">
@@ -70,13 +95,39 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
             {formatPrice(product.price)}
           </div>
           
-          <button 
-            className={`add-to-cart-btn ${!product.inStock ? 'disabled' : ''}`}
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-          >
-            {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-          </button>
+          {quantity > 0 ? (
+            <div className="quantity-controls">
+              <div className="quantity-display">
+                <button 
+                  className="quantity-btn decrease"
+                  onClick={handleDecreaseQuantity}
+                >
+                  −
+                </button>
+                <span className="quantity-number">{quantity}</span>
+                <button 
+                  className="quantity-btn increase"
+                  onClick={handleIncreaseQuantity}
+                >
+                  +
+                </button>
+              </div>
+              <button 
+                className="view-cart-btn"
+                onClick={handleViewCart}
+              >
+                View Cart
+              </button>
+            </div>
+          ) : (
+            <button 
+              className={`add-to-cart-btn ${!product.inStock ? 'disabled' : ''}`}
+              onClick={handleAddToCart}
+              disabled={!product.inStock}
+            >
+              {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+          )}
         </div>
         
         <div className="product-meta">

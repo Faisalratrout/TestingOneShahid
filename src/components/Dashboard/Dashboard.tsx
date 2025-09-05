@@ -1,15 +1,26 @@
-// Day 2 Enhanced Dashboard with Products
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
-import { RootState } from '../../store';
+import { fetchOrders } from '../../store/slices/ordersSlice';
+import { RootState, AppDispatch } from '../../store';
 import ProductList from '../Products/ProductList';
+import Orders from '../Orders/Orders';
+import Cart from '../Cart/Cart';
+import CartButton from '../Cart/CartButton';
+import Checkout from '../Orders/Checkout';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { orders } = useSelector((state: RootState) => state.orders);
   const [activeTab, setActiveTab] = useState('products');
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchOrders());
+    }
+  }, [dispatch, user]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -20,17 +31,15 @@ const Dashboard: React.FC = () => {
       case 'products':
         return <ProductList />;
       case 'orders':
-        return (
-          <div className="tab-content">
-            <h2>Orders</h2>
-            <p>Order management coming in Day 3</p>
-          </div>
-        );
+        return <Orders />;
       case 'analytics':
         return (
           <div className="tab-content">
             <h2>Analytics</h2>
-            <p>Sales analytics coming in Day 3</p>
+            <p>Sales analytics and reports</p>
+            <div className="coming-soon">
+              <p>📊 Advanced analytics coming soon!</p>
+            </div>
           </div>
         );
       default:
@@ -45,6 +54,7 @@ const Dashboard: React.FC = () => {
           <h1>E-Commerce Dashboard</h1>
           <div className="user-section">
             <span className="welcome-text">Welcome, {user?.name}!</span>
+            <CartButton />
             <button onClick={handleLogout} className="logout-button">
               Logout
             </button>
@@ -55,9 +65,21 @@ const Dashboard: React.FC = () => {
       <nav className="dashboard-nav">
         <div className="nav-content">
           {[
-            { key: 'products', label: ' Products', count: null },
-            { key: 'orders', label: ' Orders', count: 'Coming Soon' },
-            { key: 'analytics', label: ' Analytics', count: 'Coming Soon' }
+            { 
+              key: 'products', 
+              label: ' Products', 
+              count: null 
+            },
+            { 
+              key: 'orders', 
+              label: ' Orders', 
+              count: orders.length > 0 ? orders.length : null 
+            },
+            { 
+              key: 'analytics', 
+              label: ' Analytics', 
+              count: 'Soon' 
+            }
           ].map(({ key, label, count }) => (
             <button
               key={key}
@@ -74,11 +96,11 @@ const Dashboard: React.FC = () => {
         {renderContent()}
       </main>
 
-      {activeTab === 'products' && (
-        <div className="day-info">
-          <p> Day 2 Complete / Product listing with search / filters / and sorting is working</p>
-        </div>
-      )}
+      <div className="system-info">
+        <p> Complete E-Commerce  Auth/ Products/ Cart/ Orders</p>
+      </div>
+
+      <Cart />
     </div>
   );
 };

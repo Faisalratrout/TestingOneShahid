@@ -69,12 +69,12 @@ export interface ProductsState {
   searchTerm: string;
 }
 
+// Day 3 Updated CartState to match our cart slice implementation
 export interface CartState {
   items: CartItem[];
-  totalQuantity: number;
+  isOpen: boolean;
+  totalItems: number;
   totalAmount: number;
-  isLoading: boolean;
-  error: string | null;
 }
 
 export interface OrdersState {

@@ -1,5 +1,4 @@
 // Day 1 Setting up basic app with Redux and routing
-// Just getting login to work first, will add more pages later
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

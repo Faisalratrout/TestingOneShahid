@@ -87,3 +87,36 @@ button[type="submit"]:disabled {
   font-size: 0.9rem;
   color: #004085;
 }
+
+/* Day 3 Added signup toggle styling */
+.auth-toggle {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.auth-toggle p {
+  margin: 0;
+  color: #666;
+}
+
+.toggle-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.toggle-link:hover:not(:disabled) {
+  color: #0056b3;
+}
+
+.toggle-link:disabled {
+  color: #6c757d;
+  cursor: not-allowed;
+}

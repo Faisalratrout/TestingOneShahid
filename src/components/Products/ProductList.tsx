@@ -1,5 +1,3 @@
-// Day 2 Complete ProductList Component
-// Features Product display/ search/ filtering/ sorting
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
@@ -174,10 +172,6 @@ const ProductList: React.FC = () => {
                 <ProductCard 
                   key={product.id} 
                   product={product}
-                  onAddToCart={(productId) => {
-                    // Placeholder for cart functionality
-                    console.log('Adding to cart:', productId);
-                  }}
                 />
               ))}
             </div>

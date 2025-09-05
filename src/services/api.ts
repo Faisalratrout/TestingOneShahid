@@ -5,7 +5,6 @@ import { LoginCredentials, User, Product, Order } from '../types';
 // Mock API service for authentication
 export const authAPI = {
   login: async (credentials: LoginCredentials): Promise<{ user: User; token: string }> => {
-    // Simple mock delay to simulate network request
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     // Demo credentials for Day 1

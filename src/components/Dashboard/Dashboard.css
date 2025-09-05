@@ -100,36 +100,72 @@
   font-weight: normal;
 }
 
-.dashboard-main {
-  min-height: calc(100vh - 162px);
+.checkout-nav-button {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: auto;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
-.tab-content {
-  padding: 3rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+.checkout-nav-button:hover {
+  background: linear-gradient(135deg, #218838, #1ea780);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.system-info {
   text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 2px solid #e0e0e0;
 }
 
-.tab-content h2 {
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.tab-content p {
-  color: #666;
+.system-info p {
+  margin: 0;
+  color: #1976d2;
+  font-weight: 600;
   font-size: 1.1rem;
 }
 
-.day-info {
-  background: linear-gradient(135deg, #28a745, #20c997);
+.nav-count {
+  background: #007bff;
   color: white;
-  padding: 1rem;
-  text-align: center;
-  margin-top: 2rem;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  margin-left: 0.5rem;
+  font-weight: 600;
 }
 
-.day-info p {
-  margin: 0;
-  font-weight: 500;
+.nav-button:nth-child(2) .nav-count {
+  background: #28a745; 
 }
+
+.nav-button:nth-child(3) .nav-count {
+  background: #ffc107; 
+  color: #000;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-top: 2rem;
+  border: 2px dashed #dee2e6;
+}
+
+.coming-soon p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0;
+}
+
