@@ -69,7 +69,7 @@ export interface ProductsState {
   searchTerm: string;
 }
 
-// Day 3 Updated CartState to match our cart slice implementation
+// Day 3 Updated CartState 
 export interface CartState {
   items: CartItem[];
   isOpen: boolean;

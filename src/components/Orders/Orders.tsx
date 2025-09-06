@@ -34,7 +34,7 @@ const Orders: React.FC = () => {
     return (
       <div className="orders-container">
         <div className="error-state">
-          <h2>⚠️ Something went wrong</h2>
+          <h2> Something went wrong</h2>
           <p>{error}</p>
           <button 
             onClick={() => dispatch(fetchOrders())}

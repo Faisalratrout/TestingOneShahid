@@ -1,9 +1,9 @@
-// Enhanced store with all slices Auth/ Products/ Cart/ Orders
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './slices/authSlice';
 import productsSlice from './slices/productsSlice';
 import cartSlice from './slices/cartSlice';
 import ordersSlice from './slices/ordersSlice';
+import toastSlice from './slices/toastSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ export const store = configureStore({
     products: productsSlice,
     cart: cartSlice,
     orders: ordersSlice,
+    toast: toastSlice,
   },
 });
 

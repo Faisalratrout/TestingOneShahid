@@ -1,4 +1,3 @@
-// Day 1 Setting up basic app with Redux and routing
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +5,7 @@ import { verifyToken } from './store/slices/authSlice';
 import { RootState, AppDispatch } from './store';
 import Login from './components/Auth/Login';
 import Dashboard from './components/Dashboard/Dashboard';
+import ToastContainer from './components/Toast/ToastContainer';
 import './App.css';
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
             element={<Navigate to={user ? "/dashboard" : "/login"} />} 
           />
         </Routes>
+        <ToastContainer />
       </div>
     </Router>
   );

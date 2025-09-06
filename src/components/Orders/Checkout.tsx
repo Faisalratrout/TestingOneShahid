@@ -82,8 +82,20 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess, onCancel }) => {
     try {
       await dispatch(createOrder({
         items,
-        shippingAddress,
-        totalAmount: totalAmount
+        total: totalAmount,
+        customerInfo: {
+          name: shippingAddress.street, 
+          email: 'faisal.muhratrout@gmail.com', 
+          phone: '0796190362', 
+        },
+        shippingAddress: {
+          address: shippingAddress.street,
+          city: shippingAddress.city,
+          state: shippingAddress.state,
+          zipCode: shippingAddress.zipCode,
+          country: shippingAddress.country,
+        },
+        paymentMethod: 'credit-card',
       })).unwrap();
       
       dispatch(clearCart());

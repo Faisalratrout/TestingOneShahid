@@ -1,44 +1,33 @@
-// Day 1 Basic API service  simple mock implementation
-// Will add real API calls later as we iterate
+import axios from 'axios';
 import { LoginCredentials, User, Product, Order } from '../types';
 
-// Mock API service for authentication
+//  axios 
+const api = axios.create({
+  baseURL: '/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Authentication API service
 export const authAPI = {
   login: async (credentials: LoginCredentials): Promise<{ user: User; token: string }> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Demo credentials for Day 1
-    if (credentials.email === 'demo@example.com' && credentials.password === 'password') {
-      const user: User = {
-        id: '1',
-        name: 'Demo User',
-        email: credentials.email,
-        role: 'user', 
-      };
-      const token = 'mock-jwt-token-' + Date.now();
-      return { user, token };
-    }
-    
-    throw new Error('Invalid email or password');
+    const response = await api.post('/auth/login', credentials);
+    return response.data;
   },
 
   verifyToken: async (token: string): Promise<User> => {
-    // Simple mock token verification
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    if (token && token.startsWith('mock-jwt-token-')) {
-      return {
-        id: '1',
-        name: 'Demo User',
-        email: 'demo@example.com',
-        role: 'user'
-      };
-    }
-    throw new Error('Invalid or expired token');
+    const response = await api.post('/auth/verify', {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
   }
 };
 
-// Mock product data for Day 2
+// Mock product data
 const MOCK_PRODUCTS: Product[] = [
   {
     id: '1',
@@ -147,7 +136,7 @@ export const productsAPI = {
     sortOrder?: 'asc' | 'desc';
   }): Promise<Product[]> => {
     // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 400));
     
     let filteredProducts = [...MOCK_PRODUCTS];
     
@@ -222,14 +211,12 @@ export const productsAPI = {
 
 export const ordersAPI = {
   getOrders: async (): Promise<Order[]> => {
-    // Day 1 placeholder  will implement later
-    await new Promise(resolve => setTimeout(resolve, 800));
-    return [];
+    const response = await api.get('/orders');
+    return response.data;
   },
 
   getOrder: async (id: string): Promise<Order> => {
-    // Day 1 placeholder  will implement later
-    await new Promise(resolve => setTimeout(resolve, 500));
-    throw new Error('Orders API not implemented yet');
+    const response = await api.get(`/orders/${id}`);
+    return response.data;
   }
 };

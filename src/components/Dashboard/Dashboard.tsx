@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import { fetchOrders } from '../../store/slices/ordersSlice';
+import { fetchProducts } from '../../store/slices/productsSlice';
 import { RootState, AppDispatch } from '../../store';
 import ProductList from '../Products/ProductList';
 import Orders from '../Orders/Orders';
+import Analytics from '../Analytics/Analytics';
 import Cart from '../Cart/Cart';
 import CartButton from '../Cart/CartButton';
-import Checkout from '../Orders/Checkout';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
   const { orders } = useSelector((state: RootState) => state.orders);
-  const [activeTab, setActiveTab] = useState('products');
+  const [activeTab, setActiveTab] = useState('analytics');
 
   useEffect(() => {
     if (user) {
       dispatch(fetchOrders());
+      dispatch(fetchProducts());
     }
   }, [dispatch, user]);
 
@@ -28,22 +30,14 @@ const Dashboard: React.FC = () => {
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'analytics':
+        return <Analytics />;
       case 'products':
         return <ProductList />;
       case 'orders':
         return <Orders />;
-      case 'analytics':
-        return (
-          <div className="tab-content">
-            <h2>Analytics</h2>
-            <p>Sales analytics and reports</p>
-            <div className="coming-soon">
-              <p>📊 Advanced analytics coming soon!</p>
-            </div>
-          </div>
-        );
       default:
-        return <ProductList />;
+        return <Analytics />;
     }
   };
 
@@ -66,19 +60,19 @@ const Dashboard: React.FC = () => {
         <div className="nav-content">
           {[
             { 
+              key: 'analytics', 
+              label: '📊 Analytics', 
+              count: null 
+            },
+            { 
               key: 'products', 
-              label: ' Products', 
+              label: '🛍️ Products', 
               count: null 
             },
             { 
               key: 'orders', 
-              label: ' Orders', 
+              label: '📦 Orders', 
               count: orders.length > 0 ? orders.length : null 
-            },
-            { 
-              key: 'analytics', 
-              label: ' Analytics', 
-              count: 'Soon' 
             }
           ].map(({ key, label, count }) => (
             <button

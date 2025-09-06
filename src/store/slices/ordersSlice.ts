@@ -7,14 +7,20 @@ export const createOrder = createAsyncThunk(
   'orders/createOrder',
   async (orderData: {
     items: CartItem[];
-    totalAmount: number;
+    total: number;
+    customerInfo: {
+      name: string;
+      email: string;
+      phone: string;
+    };
     shippingAddress: {
-      street: string;
+      address: string;
       city: string;
       state: string;
       zipCode: string;
       country: string;
     };
+    paymentMethod: string;
   }) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -30,10 +36,16 @@ export const createOrder = createAsyncThunk(
       id: 'order-' + Date.now(),
       userId: user.id,
       items: orderData.items,
-      totalAmount: orderData.totalAmount,
+      totalAmount: orderData.total,
       status: 'pending',
       createdAt: new Date().toISOString(),
-      shippingAddress: orderData.shippingAddress,
+      shippingAddress: {
+        street: orderData.shippingAddress.address,
+        city: orderData.shippingAddress.city,
+        state: orderData.shippingAddress.state,
+        zipCode: orderData.shippingAddress.zipCode,
+        country: orderData.shippingAddress.country,
+      },
     };
     
     // Save order to localStorage
@@ -109,7 +121,6 @@ const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Create order cases
       .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -122,7 +133,7 @@ const ordersSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || 'Failed to create order';
       })
-      // Fetch orders cases
+
       .addCase(fetchOrders.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -135,7 +146,7 @@ const ordersSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || 'Failed to fetch orders';
       })
-      // Update order status cases
+
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
         const orderIndex = state.orders.findIndex(order => order.id === action.payload.id);
         if (orderIndex !== -1) {

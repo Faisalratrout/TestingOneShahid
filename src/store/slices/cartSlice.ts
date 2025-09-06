@@ -8,11 +8,40 @@ export interface CartState {
   totalAmount: number;
 }
 
+const CART_STORAGE_KEY = 'ecommerce_cart';
+
+const loadCartFromStorage = (): CartItem[] => {
+  try {
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    return savedCart ? JSON.parse(savedCart) : [];
+  } catch (error) {
+    console.warn('Failed to load cart from localStorage:', error);
+    return [];
+  }
+};
+
+const saveCartToStorage = (items: CartItem[]) => {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch (error) {
+    console.warn('Failed to save cart to localStorage:', error);
+  }
+};
+
+const calculateTotals = (items: CartItem[]) => {
+  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+  const totalAmount = items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  return { totalItems, totalAmount };
+};
+
+const persistedItems = loadCartFromStorage();
+const { totalItems, totalAmount } = calculateTotals(persistedItems);
+
 const initialState: CartState = {
-  items: [],
+  items: persistedItems,
   isOpen: false,
-  totalItems: 0,
-  totalAmount: 0,
+  totalItems,
+  totalAmount,
 };
 
 const cartSlice = createSlice({
@@ -35,15 +64,18 @@ const cartSlice = createSlice({
         state.items.push(newItem);
       }
       
-      // Update totals
-      state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
-      state.totalAmount = state.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+      const totals = calculateTotals(state.items);
+      state.totalItems = totals.totalItems;
+      state.totalAmount = totals.totalAmount;
+      saveCartToStorage(state.items);
     },
 
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter(item => item.id !== action.payload);
-      state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
-      state.totalAmount = state.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+      const totals = calculateTotals(state.items);
+      state.totalItems = totals.totalItems;
+      state.totalAmount = totals.totalAmount;
+      saveCartToStorage(state.items);
     },
 
     updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
@@ -54,8 +86,10 @@ const cartSlice = createSlice({
         } else {
           item.quantity = action.payload.quantity;
         }
-        state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
-        state.totalAmount = state.items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+        const totals = calculateTotals(state.items);
+        state.totalItems = totals.totalItems;
+        state.totalAmount = totals.totalAmount;
+        saveCartToStorage(state.items);
       }
     },
 
@@ -63,6 +97,7 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       state.totalAmount = 0;
+      saveCartToStorage([]);
     },
 
     toggleCart: (state) => {

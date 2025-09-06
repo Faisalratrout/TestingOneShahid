@@ -1,8 +1,8 @@
-// Enhanced ProductCard component with cart functionality
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Product } from '../../types';
 import { addToCart, updateQuantity, removeFromCart, openCart } from '../../store/slices/cartSlice';
+import { addToast } from '../../store/slices/toastSlice';
 import { RootState, AppDispatch } from '../../store';
 import './ProductCard.css';
 
@@ -20,6 +20,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    dispatch(addToast({
+      message: `${product.name} added to cart!`,
+      type: 'success',
+    }));
   };
 
   const handleIncreaseQuantity = () => {
@@ -28,14 +32,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     } else {
       dispatch(addToCart(product));
     }
+    dispatch(addToast({
+      message: `${product.name} quantity updated!`,
+      type: 'info',
+    }));
   };
 
   const handleDecreaseQuantity = () => {
     if (cartItem) {
       if (cartItem.quantity > 1) {
         dispatch(updateQuantity({ id: cartItem.id, quantity: cartItem.quantity - 1 }));
+        dispatch(addToast({
+          message: `${product.name} quantity updated!`,
+          type: 'info',
+        }));
       } else {
         dispatch(removeFromCart(cartItem.id));
+        dispatch(addToast({
+          message: `${product.name} removed from cart!`,
+          type: 'warning',
+        }));
       }
     }
   };
