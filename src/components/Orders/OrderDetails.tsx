@@ -80,7 +80,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
               <span>{order.id}</span>
             </div>
             <div className="info-item">
-              <label>{t('orders.status')}:</label>
+              <label>{t('orders.statusLabel')}:</label>
               <span className="status-text" style={{ color: getStatusColor(order.status) }}>
                 {t(`orders.${order.status}`)}
               </span>
