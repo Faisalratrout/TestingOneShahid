@@ -1,8 +1,8 @@
 .cart-button {
   position: relative;
-  background: #059669;
-  color: white;
-  border: none;
+  background: #f8f9fa;
+  color: #000;
+  border: 1px solid #dee2e6;
   padding: 12px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -15,7 +15,7 @@
 }
 
 .cart-button:hover {
-  background: #047857;
+  background: #e9ecef;
   transform: translateY(-1px);
 }
 
@@ -41,9 +41,10 @@
 }
 
 .cart-button.has-items {
-  background: #dc2626;
+  background: #f8f9fa;
+  color: #000;
 }
 
 .cart-button.has-items:hover {
-  background: #b91c1c;
+  background: #e9ecef;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Product } from '../../types';
 import { addToCart, updateQuantity, removeFromCart, openCart } from '../../store/slices/cartSlice';
 import { addToast } from '../../store/slices/toastSlice';
@@ -11,6 +12,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   
@@ -21,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleAddToCart = () => {
     dispatch(addToCart(product));
     dispatch(addToast({
-      message: `${product.name} added to cart!`,
+      message: t('toasts.addedToCart', { product: product.name }),
       type: 'success',
     }));
   };
@@ -33,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       dispatch(addToCart(product));
     }
     dispatch(addToast({
-      message: `${product.name} quantity updated!`,
+      message: t('toasts.quantityUpdated', { product: product.name }),
       type: 'info',
     }));
   };
@@ -43,13 +45,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       if (cartItem.quantity > 1) {
         dispatch(updateQuantity({ id: cartItem.id, quantity: cartItem.quantity - 1 }));
         dispatch(addToast({
-          message: `${product.name} quantity updated!`,
+          message: t('toasts.quantityUpdated', { product: product.name }),
           type: 'info',
         }));
       } else {
         dispatch(removeFromCart(cartItem.id));
         dispatch(addToast({
-          message: `${product.name} removed from cart!`,
+          message: t('toasts.removedFromCart', { product: product.name }),
           type: 'warning',
         }));
       }
@@ -91,7 +93,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400';
           }}
         />
-        {!product.inStock && <div className="out-of-stock-badge">Out of Stock</div>}
+        {!product.inStock && <div className="out-of-stock-badge">{t('products.outOfStock')}</div>}
         {quantity > 0 && <div className="in-cart-badge">{quantity} in cart</div>}
       </div>
       
@@ -102,7 +104,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="product-rating">
           {renderStars(product.rating)}
           <span className="rating-text">
-            {product.rating} ({product.reviews} reviews)
+            {product.rating} ({product.reviews} {t('products.reviews')})
           </span>
         </div>
         
@@ -132,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 className="view-cart-btn"
                 onClick={handleViewCart}
               >
-                View Cart
+                {t('cart.viewCart')}
               </button>
             </div>
           ) : (
@@ -141,7 +143,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               onClick={handleAddToCart}
               disabled={!product.inStock}
             >
-              {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+              {product.inStock ? t('products.addToCart') : t('products.outOfStock')}
             </button>
           )}
         </div>

@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .user-section {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav-content {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-content {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .stats-grid,
+[dir="rtl"] .analytics-content,
+[dir="rtl"] .form-row {
+  direction: rtl;
+}
+
+[dir="rtl"] .checkout-modal {
+  text-align: right;
+}
+
+[dir="rtl"] .order-card {
+  text-align: right;
+}

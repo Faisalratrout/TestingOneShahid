@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
 import { Product } from '../../types';
 import './Analytics.css';
 
 const Analytics: React.FC = () => {
+  const { t } = useTranslation();
   const { orders } = useSelector((state: RootState) => state.orders);
   const { products } = useSelector((state: RootState) => state.products);
 
@@ -77,34 +79,34 @@ const Analytics: React.FC = () => {
   return (
     <div className="analytics-container">
       <div className="analytics-header">
-        <h1>Analytics Dashboard</h1>
-        <p>Overview of your e-commerce performance</p>
+        <h1>{t('analytics.title')}</h1>
+        <p>{t('analytics.subtitle')}</p>
       </div>
 
       <div className="stats-grid">
         <StatCard
-          title="Total Revenue"
+          title={t('analytics.totalRevenue')}
           value={formatCurrency(analytics.totalRevenue)}
-          change="+12.5% from last month"
+          change={`+12.5% ${t('analytics.fromLastMonth')}`}
           icon="💰"
           color="green"
         />
         <StatCard
-          title="Total Orders"
+          title={t('analytics.totalOrders')}
           value={analytics.totalOrders}
-          change="+8.3% from last month"
+          change={`+8.3% ${t('analytics.fromLastMonth')}`}
           icon="📦"
           color="blue"
         />
         <StatCard
-          title="Average Order Value"
+          title={t('analytics.averageOrderValue')}
           value={formatCurrency(analytics.averageOrderValue)}
-          change="+5.2% from last month"
+          change={`+5.2% ${t('analytics.fromLastMonth')}`}
           icon="🛒"
           color="purple"
         />
         <StatCard
-          title="Products Sold"
+          title={t('analytics.productsSold')}
           value={analytics.totalProducts}
           icon="📊"
           color="orange"
@@ -113,11 +115,10 @@ const Analytics: React.FC = () => {
 
       <div className="analytics-content">
         <div className="chart-section">
-          <h2>Monthly Sales Trend</h2>
+          <h2>{t('analytics.monthlySalesTrend')}</h2>
           <div className="sales-chart">
             {analytics.monthlySales.map((month, index) => {
-              const maxSales = Math.max(...analytics.monthlySales.map(m => m.sales));
-              const height = (month.sales / maxSales) * 200;
+              const height = 200;
               
               return (
                 <div key={month.month} className="chart-bar">
@@ -129,7 +130,7 @@ const Analytics: React.FC = () => {
                   <div className="chart-label">
                     <div>{month.month}</div>
                     <div className="chart-value">{formatCurrency(month.sales)}</div>
-                    <div className="chart-orders">{month.orders} orders</div>
+                    <div className="chart-orders">{month.orders} {t('analytics.orders')}</div>
                   </div>
                 </div>
               );
@@ -138,12 +139,12 @@ const Analytics: React.FC = () => {
         </div>
 
         <div className="status-section">
-          <h2>Order Status Distribution</h2>
+          <h2>{t('analytics.orderStatusDistribution')}</h2>
           <div className="status-grid">
             {Object.entries(analytics.orderStatusCount).map(([status, count]) => (
               <div key={status} className="status-item">
                 <div className={`status-indicator status-${status}`}></div>
-                <span className="status-label">{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+                <span className="status-label">{t(`orders.status.${status}`)}</span>
                 <span className="status-count">{count}</span>
               </div>
             ))}
@@ -151,10 +152,10 @@ const Analytics: React.FC = () => {
         </div>
 
         <div className="products-section">
-          <h2>Top Selling Products</h2>
+          <h2>{t('analytics.topSellingProducts')}</h2>
           <div className="products-table">
             <div className="table-header">
-              <span>Product</span>
+              <span>{t('products.title').slice(0, -1)}</span>
               <span>Sold</span>
               <span>Revenue</span>
             </div>
@@ -181,13 +182,13 @@ const Analytics: React.FC = () => {
 
         <div className="additional-metrics">
           <div className="metric-card">
-            <h3>Conversion Rate</h3>
+            <h3>{t('analytics.conversionRate')}</h3>
             <div className="metric-value">{analytics.conversionRate}%</div>
             <div className="metric-trend positive">↑ +2.1%</div>
           </div>
           
           <div className="metric-card">
-            <h3>Customer Satisfaction</h3>
+            <h3>{t('analytics.customerSatisfaction')}</h3>
             <div className="metric-value">{analytics.customerSatisfaction}/5.0</div>
             <div className="metric-stars">
               {'★'.repeat(Math.floor(analytics.customerSatisfaction))}
@@ -196,7 +197,7 @@ const Analytics: React.FC = () => {
           </div>
 
           <div className="metric-card">
-            <h3>Return Rate</h3>
+            <h3>{t('analytics.returnRate')}</h3>
             <div className="metric-value">2.3%</div>
             <div className="metric-trend negative">↓ -0.5%</div>
           </div>

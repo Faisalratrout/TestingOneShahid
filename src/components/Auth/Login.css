@@ -120,3 +120,29 @@ button[type="submit"]:disabled {
   color: #6c757d;
   cursor: not-allowed;
 }
+
+.login-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+[dir="rtl"] .login-form {
+  text-align: right;
+}
+
+[dir="rtl"] .form-group label {
+  text-align: right;
+}
+
+[dir="rtl"] .auth-toggle {
+  text-align: right;
+}
+
+[dir="rtl"] .demo-info {
+  text-align: right;
+}
+
+[dir="rtl"] .login-header {
+  justify-content: flex-start;
+}

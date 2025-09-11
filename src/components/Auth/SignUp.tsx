@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { loginUser } from '../../store/slices/authSlice';
 import { AppDispatch } from '../../store';
 import './Login.css';
 
 const SignUp: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,12 +28,12 @@ const SignUp: React.FC = () => {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('auth.passwordsDoNotMatch'));
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError(t('auth.passwordMinLength'));
       return;
     }
 
@@ -45,69 +47,69 @@ const SignUp: React.FC = () => {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h2>Sign Up</h2>
+        <h2>{t('auth.signUp')}</h2>
         
         {error && <div className="error-message">{error}</div>}
         
         <div className="form-group">
-          <label htmlFor="name">Full Name</label>
+          <label htmlFor="name">{t('auth.fullName')}</label>
           <input
             type="text"
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter your full name"
+            placeholder={t('auth.enterFullName')}
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{t('auth.email')}</label>
           <input
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder={t('auth.enterEmail')}
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{t('auth.password')}</label>
           <input
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Enter your password"
+            placeholder={t('auth.enterPassword')}
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">{t('auth.confirmPassword')}</label>
           <input
             type="password"
             id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
-            placeholder="Confirm your password"
+            placeholder={t('auth.confirmPasswordPlaceholder')}
             required
           />
         </div>
 
         <button type="submit" className="login-button">
-          Sign Up
+          {t('auth.signUp')}
         </button>
         
         <div style={{ textAlign: 'center', marginTop: '16px' }}>
           <span style={{ color: '#666', fontSize: '14px' }}>
-            Already have an account?{' '}
+            {t('auth.alreadyHaveAccount')}{' '}
             <button 
               type="button"
               style={{ 
@@ -119,7 +121,7 @@ const SignUp: React.FC = () => {
               }}
               onClick={() => window.location.reload()} // Simple way to go back to login
             >
-              Sign In
+              {t('auth.signIn')}
             </button>
           </span>
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState, AppDispatch } from '../../store';
 import { 
   fetchProducts, 
@@ -14,6 +15,7 @@ import ProductCard from './ProductCard';
 import './ProductList.css';
 
 const ProductList: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { 
     products, 
@@ -71,7 +73,7 @@ const ProductList: React.FC = () => {
     return (
       <div className="products-container">
         <div className="error-state">
-          <h2> Oops! Something went wrong</h2>
+          <h2>{t('common.error')}! Something went wrong</h2>
           <p>{error}</p>
           <button 
             onClick={() => dispatch(fetchProducts())}
@@ -87,7 +89,7 @@ const ProductList: React.FC = () => {
   return (
     <div className="products-container">
       <div className="products-header">
-        <h1>Our Products</h1>
+        <h1>{t('products.title')}</h1>
         <p>Discover amazing products at great prices</p>
       </div>
 
@@ -96,7 +98,7 @@ const ProductList: React.FC = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder={t('products.searchPlaceholder')}
               value={localSearchTerm}
               onChange={(e) => setLocalSearchTerm(e.target.value)}
               className="search-input"
@@ -107,7 +109,7 @@ const ProductList: React.FC = () => {
 
         <div className="filter-section">
           <div className="category-filter">
-            <label>Category:</label>
+            <label>{t('products.category')}:</label>
             <select 
               value={filters.category} 
               onChange={(e) => handleCategoryChange(e.target.value)}
@@ -115,20 +117,21 @@ const ProductList: React.FC = () => {
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category === 'all' ? t('products.allCategories') : 
+                   t(`products.categories.${category}`, category)}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="sort-section">
-            <label>Sort by:</label>
+            <label>{t('common.sort')} by:</label>
             <div className="sort-buttons">
               {[
-                { key: 'newest', label: 'Newest' },
-                { key: 'name', label: 'Name' },
-                { key: 'price', label: 'Price' },
-                { key: 'rating', label: 'Rating' }
+                { key: 'newest', label: t('products.sortOptions.newestFirst') },
+                { key: 'name', label: t('products.sortOptions.nameAtoZ') },
+                { key: 'price', label: t('products.price') },
+                { key: 'rating', label: t('products.rating') }
               ].map(({ key, label }) => (
                 <button
                   key={key}
@@ -142,7 +145,7 @@ const ProductList: React.FC = () => {
           </div>
 
           <button onClick={handleResetFilters} className="reset-button">
-            Reset Filters
+            {t('common.clearFilters')}
           </button>
         </div>
       </div>
@@ -151,20 +154,20 @@ const ProductList: React.FC = () => {
         {isLoading ? (
           <div className="loading-state">
             <div className="loading-spinner"></div>
-            <p>Loading amazing products...</p>
+            <p>{t('common.loading')} amazing products...</p>
           </div>
         ) : products.length === 0 ? (
           <div className="empty-state">
             <h2>🔍 No products found</h2>
             <p>Try adjusting your search or filters</p>
             <button onClick={handleResetFilters} className="reset-button">
-              Show All Products
+              {t('common.clearFilters')}
             </button>
           </div>
         ) : (
           <>
             <div className="products-meta">
-              <p>{products.length} product{products.length !== 1 ? 's' : ''} found</p>
+              <p>{products.length} {products.length === 1 ? t('products.title').slice(0, -1) : t('products.title')} found</p>
             </div>
             
             <div className="products-grid">

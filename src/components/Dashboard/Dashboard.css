@@ -40,18 +40,18 @@
 }
 
 .logout-button {
-  background: #dc3545;
-  color: white;
-  border: none;
+  background: #f8f9fa;
+  color: #000;
+  border: 1px solid #dee2e6;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .logout-button:hover {
-  background: #c82333;
+  background: #e9ecef;
 }
 
 .dashboard-nav {

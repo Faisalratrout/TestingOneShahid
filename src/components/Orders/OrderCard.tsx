@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Order } from '../../types';
 
 interface OrderCardProps {
@@ -6,16 +7,19 @@ interface OrderCardProps {
   onClick: () => void;
 }
 
+const ORDER_STATUS_COLORS = {
+  pending: '#ffc107',
+  processing: '#17a2b8',
+  shipped: '#6f42c1',
+  delivered: '#28a745',
+  cancelled: '#dc3545',
+  default: '#6c757d',
+};
+
 const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
+  const { t } = useTranslation();
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending': return '#ffc107';
-      case 'processing': return '#17a2b8';
-      case 'shipped': return '#6f42c1';
-      case 'delivered': return '#28a745';
-      case 'cancelled': return '#dc3545';
-      default: return '#6c757d';
-    }
+    return ORDER_STATUS_COLORS[status as keyof typeof ORDER_STATUS_COLORS] || ORDER_STATUS_COLORS.default;
   };
 
   const formatDate = (dateString: string) => {
@@ -26,25 +30,27 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
     });
   };
 
+  const statusColor = getStatusColor(order.status);
+
   return (
     <div className="order-card" onClick={onClick}>
       <div className="order-card-header">
         <div className="order-info">
           <h3 className="order-id">Order #{order.id.slice(-8).toUpperCase()}</h3>
-          <p className="order-date">Placed on {formatDate(order.createdAt)}</p>
+          <p className="order-date">{t('orders.placedOn')} {formatDate(order.createdAt)}</p>
         </div>
         <div 
           className="order-status"
-          style={{ backgroundColor: getStatusColor(order.status) }}
+          style={{ backgroundColor: statusColor }}
         >
-          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+          {t(`orders.${order.status}`)}
         </div>
       </div>
 
       <div className="order-card-body">
         <div className="order-summary">
           <div className="item-count">
-            {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+            {order.items.length} {order.items.length === 1 ? t('orders.item') : t('orders.items')}
           </div>
           <div className="order-total">
             ${order.totalAmount.toFixed(2)}
@@ -66,7 +72,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
           ))}
           {order.items.length > 3 && (
             <div className="more-items">
-              +{order.items.length - 3} more
+              +{order.items.length - 3} {t('orders.more')}
             </div>
           )}
         </div>
@@ -75,7 +81,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
       {order.shippingAddress && (
         <div className="order-card-footer">
           <div className="shipping-info">
-            <span className="shipping-label">Ship to:</span>
+            <span className="shipping-label">{t('orders.shipTo')}:</span>
             <span className="shipping-address">
               {order.shippingAddress.street}, {order.shippingAddress.city}
             </span>
@@ -85,7 +91,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onClick }) => {
 
       <div className="order-card-actions">
         <button className="view-details-btn">
-          View Details →
+          {t('orders.viewDetails')} →
         </button>
       </div>
     </div>

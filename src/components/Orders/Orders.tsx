@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState, AppDispatch } from '../../store';
 import { fetchOrders, selectOrder, clearSelectedOrder } from '../../store/slices/ordersSlice';
 import OrderCard from './OrderCard';
@@ -7,6 +8,7 @@ import OrderDetails from './OrderDetails';
 import './Orders.css';
 
 const Orders: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { orders, selectedOrder, isLoading, error } = useSelector((state: RootState) => state.orders);
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -59,24 +61,24 @@ const Orders: React.FC = () => {
   return (
     <div className="orders-container">
       <div className="orders-header">
-        <h1>My Orders</h1>
-        <p>Track and manage your order history</p>
+        <h1>{t('orders.myOrders')}</h1>
+        <p>{t('orders.description')}</p>
       </div>
 
       <div className="orders-filters">
         <div className="filter-group">
-          <label>Filter by status:</label>
+          <label>{t('orders.filterByStatus')}:</label>
           <select 
             value={filterStatus} 
             onChange={(e) => setFilterStatus(e.target.value)}
             className="status-filter"
           >
-            <option value="all">All Orders</option>
-            <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">{t('orders.allOrders')}</option>
+            <option value="pending">{t('orders.pending')}</option>
+            <option value="processing">{t('orders.processing')}</option>
+            <option value="shipped">{t('orders.shipped')}</option>
+            <option value="delivered">{t('orders.delivered')}</option>
+            <option value="cancelled">{t('orders.cancelled')}</option>
           </select>
         </div>
       </div>
@@ -85,30 +87,30 @@ const Orders: React.FC = () => {
         {isLoading ? (
           <div className="loading-state">
             <div className="loading-spinner"></div>
-            <p>Loading your orders...</p>
+            <p>{t('orders.loading')}</p>
           </div>
         ) : filteredOrders.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📦</div>
-            <h2>No orders found</h2>
+            <h2>{t('orders.noOrders')}</h2>
             <p>
               {filterStatus === 'all' 
-                ? "You haven't placed any orders yet. Start shopping to see your orders here!" 
-                : `No orders with status "${filterStatus}" found.`}
+                ? t('orders.noOrdersMessage')
+                : t('orders.noOrdersWithStatus', { status: filterStatus })}
             </p>
             {filterStatus !== 'all' && (
               <button 
                 onClick={() => setFilterStatus('all')}
                 className="reset-filter-button"
               >
-                Show All Orders
+                {t('orders.showAllOrders')}
               </button>
             )}
           </div>
         ) : (
           <>
             <div className="orders-meta">
-              <p>{filteredOrders.length} order{filteredOrders.length !== 1 ? 's' : ''} found</p>
+              <p>{t('orders.ordersCount', { count: filteredOrders.length })}</p>
             </div>
             
             <div className="orders-list">

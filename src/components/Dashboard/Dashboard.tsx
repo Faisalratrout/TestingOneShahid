@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { logout } from '../../store/slices/authSlice';
 import { fetchOrders } from '../../store/slices/ordersSlice';
 import { fetchProducts } from '../../store/slices/productsSlice';
@@ -9,9 +10,11 @@ import Orders from '../Orders/Orders';
 import Analytics from '../Analytics/Analytics';
 import Cart from '../Cart/Cart';
 import CartButton from '../Cart/CartButton';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
   const { orders } = useSelector((state: RootState) => state.orders);
@@ -43,14 +46,15 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
+            <header className="dashboard-header">
         <div className="header-content">
-          <h1>E-Commerce Dashboard</h1>
+          <h1>{t('dashboard.title')}</h1>
           <div className="user-section">
-            <span className="welcome-text">Welcome, {user?.name}!</span>
+            <LanguageSwitcher />
+            <span className="welcome-text">{t('common.welcome')}, {user?.name}!</span>
             <CartButton />
-            <button onClick={handleLogout} className="logout-button">
-              Logout
+            <button className="logout-button" onClick={handleLogout}>
+              {t('auth.logout')}
             </button>
           </div>
         </div>
@@ -61,17 +65,17 @@ const Dashboard: React.FC = () => {
           {[
             { 
               key: 'analytics', 
-              label: '📊 Analytics', 
+              label: `📊 ${t('dashboard.analytics')}`, 
               count: null 
             },
             { 
               key: 'products', 
-              label: '🛍️ Products', 
+              label: `🛍️ ${t('dashboard.products')}`, 
               count: null 
             },
             { 
               key: 'orders', 
-              label: '📦 Orders', 
+              label: `📦 ${t('dashboard.orders')}`, 
               count: orders.length > 0 ? orders.length : null 
             }
           ].map(({ key, label, count }) => (

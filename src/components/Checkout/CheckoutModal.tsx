@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState, AppDispatch } from '../../store';
 import { createOrder } from '../../store/slices/ordersSlice';
 import { clearCart, closeCart } from '../../store/slices/cartSlice';
@@ -12,6 +13,7 @@ interface CheckoutModalProps {
 }
 
 const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { items, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
@@ -72,14 +74,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
       onClose();
       
       dispatch(addToast({
-        message: 'Order placed successfully! 🎉',
+        message: t('checkout.orderSuccess'),
         type: 'success',
         duration: 5000
       }));
       
     } catch (error) {
       dispatch(addToast({
-        message: 'Failed to place order. Please try again.',
+        message: t('checkout.orderError'),
         type: 'error',
       }));
     } finally {
@@ -100,14 +102,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
     <div className="checkout-overlay" onClick={onClose}>
       <div className="checkout-modal" onClick={(e) => e.stopPropagation()}>
         <div className="checkout-header">
-          <h2>Checkout</h2>
+          <h2>{t('checkout.title')}</h2>
           <button className="checkout-close" onClick={onClose}>×</button>
         </div>
 
         <div className="checkout-content">
           <form onSubmit={handleSubmit}>
             <div className="checkout-section">
-              <h3>Order Summary</h3>
+              <h3>{t('checkout.orderSummary')}</h3>
               <div className="order-summary">
                 {items.map((item) => (
                   <div key={item.id} className="summary-item">
@@ -116,16 +118,16 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   </div>
                 ))}
                 <div className="summary-total">
-                  <strong>Total: {formatPrice(totalAmount)}</strong>
+                  <strong>{t('cart.total')}: {formatPrice(totalAmount)}</strong>
                 </div>
               </div>
             </div>
 
             <div className="checkout-section">
-              <h3>Shipping Address</h3>
+              <h3>{t('checkout.shippingAddress')}</h3>
               <div className="form-row">
                 <div className="form-group">
-                  <label>Full Name *</label>
+                  <label>{t('checkout.fullName')} *</label>
                   <input
                     type="text"
                     name="fullName"
@@ -135,7 +137,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Email *</label>
+                  <label>{t('checkout.email')} *</label>
                   <input
                     type="email"
                     name="email"
@@ -148,7 +150,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
               
               <div className="form-row">
                 <div className="form-group">
-                  <label>Phone Number *</label>
+                  <label>{t('checkout.phone')} *</label>
                   <input
                     type="tel"
                     name="phone"
@@ -160,20 +162,20 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="form-group">
-                <label>Address *</label>
+                <label>{t('checkout.address')} *</label>
                 <input
                   type="text"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  placeholder="Street address"
+                  placeholder={t('checkout.streetAddress')}
                   required
                 />
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>City *</label>
+                  <label>{t('checkout.city')} *</label>
                   <input
                     type="text"
                     name="city"
@@ -183,7 +185,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>State *</label>
+                  <label>{t('checkout.state')} *</label>
                   <input
                     type="text"
                     name="state"
@@ -193,7 +195,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>ZIP Code *</label>
+                  <label>{t('checkout.zipCode')} *</label>
                   <input
                     type="text"
                     name="zipCode"
@@ -206,7 +208,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             <div className="checkout-section">
-              <h3>Payment Method</h3>
+              <h3>{t('checkout.paymentMethod')}</h3>
               <div className="payment-methods">
                 <label className="payment-option">
                   <input
@@ -216,7 +218,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                     checked={formData.paymentMethod === 'card'}
                     onChange={handleInputChange}
                   />
-                  <span>Credit/Debit Card</span>
+                  <span>{t('checkout.creditCard')}</span>
                 </label>
                 <label className="payment-option">
                   <input
@@ -226,14 +228,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                     checked={formData.paymentMethod === 'paypal'}
                     onChange={handleInputChange}
                   />
-                  <span> PayPal</span>
+                  <span>{t('checkout.paypal')}</span>
                 </label>
               </div>
 
               {formData.paymentMethod === 'card' && (
                 <>
                   <div className="form-group">
-                    <label>Name on Card </label>
+                    <label>{t('checkout.nameOnCard')} *</label>
                     <input
                       type="text"
                       name="nameOnCard"
@@ -243,7 +245,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Card Number </label>
+                    <label>{t('checkout.cardNumber')} *</label>
                     <input
                       type="text"
                       name="cardNumber"
@@ -256,7 +258,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   </div>
                   <div className="form-row">
                     <div className="form-group">
-                      <label>Expiry Date </label>
+                      <label>{t('checkout.expiryDate')} *</label>
                       <input
                         type="text"
                         name="expiryDate"
@@ -268,7 +270,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                       />
                     </div>
                     <div className="form-group">
-                      <label>CVV </label>
+                      <label>{t('checkout.cvv')} *</label>
                       <input
                         type="text"
                         name="cvv"
@@ -291,14 +293,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                 onClick={onClose}
                 disabled={isProcessing}
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 type="submit"
                 className="btn-place-order"
                 disabled={isProcessing}
               >
-                {isProcessing ? 'Processing...' : `Place Order - ${formatPrice(totalAmount)}`}
+                {isProcessing ? t('checkout.processing') : `${t('checkout.placeOrder')} - ${formatPrice(totalAmount)}`}
               </button>
             </div>
           </form>

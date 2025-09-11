@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { AppDispatch } from '../../store';
 import { updateOrderStatus } from '../../store/slices/ordersSlice';
 import { Order } from '../../types';
@@ -10,6 +11,7 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   const getStatusColor = (status: string) => {
@@ -52,7 +54,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
     <div className="order-details-container">
       <div className="order-details-header">
         <button onClick={onBack} className="back-button">
-          ← Back to Orders
+          ← {t('orders.backToOrders')}
         </button>
         <div className="order-title">
           <h1>Order #{order.id.slice(-8).toUpperCase()}</h1>
@@ -60,38 +62,38 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
             className="order-status-badge"
             style={{ backgroundColor: getStatusColor(order.status) }}
           >
-            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+            {t(`orders.${order.status}`)}
           </div>
         </div>
       </div>
 
       <div className="order-details-content">
         <div className="order-info-section">
-          <h2>Order Information</h2>
+          <h2>{t('orders.orderInformation')}</h2>
           <div className="info-grid">
             <div className="info-item">
-              <label>Order Date:</label>
+              <label>{t('orders.orderDate')}:</label>
               <span>{formatDate(order.createdAt)}</span>
             </div>
             <div className="info-item">
-              <label>Order ID:</label>
+              <label>{t('orders.orderID')}:</label>
               <span>{order.id}</span>
             </div>
             <div className="info-item">
-              <label>Status:</label>
+              <label>{t('orders.status')}:</label>
               <span className="status-text" style={{ color: getStatusColor(order.status) }}>
-                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                {t(`orders.${order.status}`)}
               </span>
             </div>
             <div className="info-item">
-              <label>Total Amount:</label>
+              <label>{t('orders.totalAmount')}:</label>
               <span className="total-amount">${order.totalAmount.toFixed(2)}</span>
             </div>
           </div>
         </div>
 
         <div className="shipping-section">
-          <h2>Shipping Address</h2>
+          <h2>{t('orders.shippingAddress')}</h2>
           <div className="shipping-address">
             <p>{order.shippingAddress.street}</p>
             <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
@@ -100,7 +102,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
         </div>
 
         <div className="items-section">
-          <h2>Order Items ({order.items.length})</h2>
+          <h2>{t('orders.orderItems')} ({order.items.length})</h2>
           <div className="items-list">
             {order.items.map((item, index) => (
               <div key={index} className="order-item">
@@ -112,9 +114,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
                   <p className="item-description">{item.product.description}</p>
                   <div className="item-meta">
                     <span className="item-price">${item.product.price.toFixed(2)}</span>
-                    <span className="item-quantity">Qty: {item.quantity}</span>
+                    <span className="item-quantity">{t('orders.quantity')}: {item.quantity}</span>
                     <span className="item-subtotal">
-                      Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
+                      {t('orders.subtotal')}: ${(item.product.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -124,22 +126,22 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
         </div>
 
         <div className="order-summary-section">
-          <h2>Order Summary</h2>
+          <h2>{t('orders.orderSummary')}</h2>
           <div className="summary-breakdown">
             <div className="summary-line">
-              <span>Subtotal:</span>
+              <span>{t('orders.subtotal')}:</span>
               <span>${(order.totalAmount * 0.9).toFixed(2)}</span>
             </div>
             <div className="summary-line">
-              <span>Tax:</span>
+              <span>{t('orders.tax')}:</span>
               <span>${(order.totalAmount * 0.08).toFixed(2)}</span>
             </div>
             <div className="summary-line">
-              <span>Shipping:</span>
+              <span>{t('orders.shipping')}:</span>
               <span>${(order.totalAmount * 0.02).toFixed(2)}</span>
             </div>
             <div className="summary-line total">
-              <span>Total:</span>
+              <span>{t('orders.total')}:</span>
               <span>${order.totalAmount.toFixed(2)}</span>
             </div>
           </div>
@@ -147,20 +149,20 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, onBack }) => {
 
         {nextStatus && order.status !== 'cancelled' && order.status !== 'delivered' && (
           <div className="order-actions-section">
-            <h2>Order Actions</h2>
+            <h2>{t('orders.orderActions')}</h2>
             <div className="action-buttons">
               <button
                 onClick={() => handleStatusUpdate(nextStatus)}
                 className="update-status-button"
               >
-                Mark as {nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1)}
+                {t('orders.markAs')} {t(`orders.${nextStatus}`)}
               </button>
               {order.status === 'pending' && (
                 <button
                   onClick={() => handleStatusUpdate('cancelled')}
                   className="cancel-order-button"
                 >
-                  Cancel Order
+                  {t('orders.cancelOrder')}
                 </button>
               )}
             </div>

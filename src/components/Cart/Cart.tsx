@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
 import { closeCart, removeFromCart, updateQuantity, clearCart } from '../../store/slices/cartSlice';
 import { addToast } from '../../store/slices/toastSlice';
@@ -7,6 +8,7 @@ import CheckoutModal from '../Checkout/CheckoutModal';
 import './Cart.css';
 
 const Cart: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { items, isOpen, totalItems, totalAmount } = useSelector((state: RootState) => state.cart);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -31,7 +33,7 @@ const Cart: React.FC = () => {
   const handleRemoveItem = (itemId: string) => {
     dispatch(removeFromCart(itemId));
     dispatch(addToast({
-      message: 'Item removed from cart',
+      message: t('cart.itemRemoved'),
       type: 'info',
     }));
   };
@@ -41,10 +43,10 @@ const Cart: React.FC = () => {
   };
 
   const handleClearCart = () => {
-    if (window.confirm('Are you sure you want to clear your cart?')) {
+    if (window.confirm(t('cart.clearConfirm'))) {
       dispatch(clearCart());
       dispatch(addToast({
-        message: 'Cart cleared successfully',
+        message: t('cart.cleared'),
         type: 'info',
       }));
     }
@@ -55,9 +57,9 @@ const Cart: React.FC = () => {
       <div className="cart-overlay" onClick={() => dispatch(closeCart())}>
         <div className="cart-sidebar" onClick={(e) => e.stopPropagation()}>
           <div className="cart-header">
-            <h2 className="cart-title">Shopping Cart</h2>
+            <h3>{t('cart.shoppingCart')}</h3>
             <button 
-              className="cart-close"
+              className="close-button"
               onClick={() => dispatch(closeCart())}
             >
               ×
@@ -66,13 +68,11 @@ const Cart: React.FC = () => {
 
           <div className="cart-content">
             {items.length === 0 ? (
-              <div className="cart-empty">
-                <div className="cart-empty-icon">🛒</div>
-                <div className="cart-empty-text">Your cart is empty</div>
-                <div className="cart-empty-subtext">Add some products</div>
+              <div className="empty-cart">
+                <p>{t('cart.empty')}</p>
               </div>
             ) : (
-              <div className="cart-items">
+              <>
                 {items.map((item) => (
                   <div key={item.id} className="cart-item">
                     <img 
@@ -81,36 +81,41 @@ const Cart: React.FC = () => {
                       className="cart-item-image"
                     />
                     <div className="cart-item-details">
-                      <div className="cart-item-name">{item.product.name}</div>
-                      <div className="cart-item-price">{formatPrice(item.product.price * item.quantity)}</div>
-                      
+                      <div className="cart-item-info">
+                        <h4 className="cart-item-name">{item.product.name}</h4>
+                        <p className="cart-item-price">{formatPrice(item.product.price)}</p>
+                      </div>
                       <div className="cart-item-controls">
-                        <button
-                          className="quantity-btn"
-                          onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                        >
-                          −
-                        </button>
-                        <span className="quantity-display">{item.quantity}</span>
-                        <button
-                          className="quantity-btn"
-                          onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        >
-                          +
-                        </button>
-                        
-                        <button
+                        <div className="quantity-controls">
+                          <label>{t('cart.quantity')}:</label>
+                          <div className="quantity-buttons">
+                            <button 
+                              className="quantity-btn"
+                              onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              -
+                            </button>
+                            <span className="quantity-value">{item.quantity}</span>
+                            <button 
+                              className="quantity-btn"
+                              onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                        <button 
                           className="remove-btn"
                           onClick={() => handleRemoveItem(item.id)}
-                          title="Remove item"
                         >
-                          🗑️
+                          {t('cart.remove')}
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
+              </>
             )}
           </div>
 
@@ -118,11 +123,11 @@ const Cart: React.FC = () => {
             <div className="cart-footer">
               <div className="cart-summary">
                 <div className="cart-total-items">
-                  <span>Total Items:</span>
+                  <span>{t('cart.totalItems')}:</span>
                   <span>{totalItems}</span>
                 </div>
                 <div className="cart-total-amount">
-                  <span>Total:</span>
+                  <span>{t('cart.total')}:</span>
                   <span>{formatPrice(totalAmount)}</span>
                 </div>
               </div>
@@ -132,13 +137,13 @@ const Cart: React.FC = () => {
                   className="checkout-btn"
                   onClick={handleCheckout}
                 >
-                  Proceed to Checkout
+                  {t('cart.checkout')}
                 </button>
                 <button 
                   className="continue-shopping-btn"
                   onClick={() => dispatch(closeCart())}
                 >
-                  Continue Shopping
+                  {t('cart.continueShopping')}
                 </button>
                 <button 
                   className="clear-cart-btn"
@@ -154,7 +159,7 @@ const Cart: React.FC = () => {
                     marginTop: '8px'
                   }}
                 >
-                  Clear Cart
+                  {t('cart.clear')}
                 </button>
               </div>
             </div>
@@ -169,5 +174,6 @@ const Cart: React.FC = () => {
     </>
   );
 };
+
 
 export default Cart;

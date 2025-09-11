@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { loginUser, registerUser } from '../../store/slices/authSlice';
 import { RootState, AppDispatch } from '../../store';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Login.css';
 
 const Login: React.FC = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,26 +22,26 @@ const Login: React.FC = () => {
     
     // Basic validation
     if (!email || !password) {
-      alert('Please fill in all fields');
+      alert(t('validation.fillAllFields'));
       return;
     }
     
     if (isSignupMode) {
       // Signup validation
       if (!name.trim()) {
-        alert('Please enter your name');
+        alert(t('validation.enterName'));
         return;
       }
       if (password !== confirmPassword) {
-        alert('Passwords do not match');
+        alert(t('validation.passwordsNotMatch'));
         return;
       }
       if (password.length < 6) {
-        alert('Password must be at least 6 characters');
+        alert(t('validation.passwordMinLength'));
         return;
       }
       if (!/\S+@\S+\.\S+/.test(email)) {
-        alert('Please enter a valid email address');
+        alert(t('validation.invalidEmail'));
         return;
       }
       
@@ -62,7 +65,10 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>{isSignupMode ? 'Sign Up for E-Commerce Dashboard' : 'Login to E-Commerce Dashboard'}</h2>
+        <div className="login-header">
+          <LanguageSwitcher />
+        </div>
+        <h2>{isSignupMode ? t('auth.signupTitle') : t('auth.loginTitle')}</h2>
         
         {error && (
           <div className="error-message">
@@ -73,64 +79,64 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit}>
           {isSignupMode && (
             <div className="form-group">
-              <label htmlFor="name">Full Name:</label>
+              <label htmlFor="name">{t('auth.fullName')}:</label>
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isLoading}
-                placeholder="Enter your full name"
+                placeholder={t('auth.enterFullName')}
               />
             </div>
           )}
           
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">{t('auth.email')}:</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
-              placeholder="Enter your email"
+              placeholder={t('auth.enterEmail')}
             />
           </div>
           
           <div className="form-group">
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password">{t('auth.password')}:</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
-              placeholder="Enter your password"
+              placeholder={t('auth.enterPassword')}
             />
           </div>
           
           {isSignupMode && (
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <label htmlFor="confirmPassword">{t('auth.confirmPassword')}:</label>
               <input
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={isLoading}
-                placeholder="Confirm your password"
+                placeholder={t('auth.confirmYourPassword')}
               />
             </div>
           )}
           
           <button type="submit" disabled={isLoading}>
-            {isLoading ? (isSignupMode ? 'Signing up...' : 'Logging in...') : (isSignupMode ? 'Sign Up' : 'Login')}
+            {isLoading ? (isSignupMode ? t('auth.signingUp') : t('auth.loggingIn')) : (isSignupMode ? t('auth.signup') : t('auth.login'))}
           </button>
         </form>
         
         <div className="auth-toggle">
           <p>
-            {isSignupMode ? 'Already have an account?' : "Don't have an account?"}
+            {isSignupMode ? t('auth.alreadyHaveAccount') : t('auth.noAccount')}
             {' '}
             <button 
               type="button" 
@@ -138,14 +144,14 @@ const Login: React.FC = () => {
               disabled={isLoading}
               className="toggle-link"
             >
-              {isSignupMode ? 'Sign In' : 'Sign Up'}
+              {isSignupMode ? t('auth.login') : t('auth.signup')}
             </button>
           </p>
         </div>
         
         {!isSignupMode && (
           <p className="demo-info">
-            Create your account or login with your existing credentials
+            {t('auth.createAccount')}
           </p>
         )}
       </div>

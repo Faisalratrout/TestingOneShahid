@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
 import { toggleCart } from '../../store/slices/cartSlice';
 import './CartButton.css';
 
 const CartButton: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { totalItems } = useSelector((state: RootState) => state.cart);
 
@@ -18,7 +20,7 @@ const CartButton: React.FC = () => {
       onClick={handleClick}
     >
       <span className="cart-icon">🛒</span>
-      <span>Cart</span>
+      <span>{t('dashboard.cart')}</span>
       {totalItems > 0 && (
         <span className="cart-badge">{totalItems}</span>
       )}
