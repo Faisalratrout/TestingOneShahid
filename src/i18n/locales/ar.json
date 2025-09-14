@@ -18,6 +18,11 @@
     "previous": "السابق",
     "welcome": "مرحباً"
   },
+  "splash": {
+    "title": "لوحة التجارة الإلكترونية",
+    "loading": "جاري تحميل لوحة التحكم...",
+    "poweredBy": "مدعوم بـ React و TypeScript"
+  },
   "auth": {
     "login": "تسجيل الدخول",
     "signup": "إنشاء حساب",

@@ -6,6 +6,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslations from './locales/en.json';
 // Arabic translations
 import arTranslations from './locales/ar.json';
+// French translations
+import frTranslations from './locales/fr.json';
 
 const resources = {
   en: {
@@ -13,6 +15,9 @@ const resources = {
   },
   ar: {
     translation: arTranslations,
+  },
+  fr: {
+    translation: frTranslations,
   },
 };
 
@@ -25,6 +30,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
+    supportedLngs: ['en', 'ar', 'fr'],
     debug: process.env.NODE_ENV === 'development',
     
     interpolation: {

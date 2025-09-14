@@ -6,7 +6,11 @@ const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    console.log('Switching to language:', lng);
+    i18n.changeLanguage(lng).then(() => {
+      console.log('Language changed to:', i18n.language);
+      console.log('Available languages:', Object.keys(i18n.store.data));
+    });
     // Set document direction for RTL support
     document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lng;
@@ -25,6 +29,12 @@ const LanguageSwitcher: React.FC = () => {
         onClick={() => changeLanguage('ar')}
       >
         ع
+      </button>
+      <button
+        className={`lang-btn ${i18n.language === 'fr' ? 'active' : ''}`}
+        onClick={() => changeLanguage('fr')}
+      >
+        FR
       </button>
     </div>
   );

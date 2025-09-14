@@ -18,6 +18,11 @@
     "previous": "Previous",
     "welcome": "Welcome"
   },
+  "splash": {
+    "title": "E-Commerce Dashboard",
+    "loading": "Loading your dashboard...",
+    "poweredBy": "Powered by React & TypeScript"
+  },
   "auth": {
     "login": "Login",
     "signup": "Sign Up",
