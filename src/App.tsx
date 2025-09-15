@@ -18,6 +18,7 @@ function App() {
   const [appInitialized, setAppInitialized] = useState(false);
 
   // Set initial language direction
+  //rtl support
   useEffect(() => {
     const currentLang = i18n.language || 'en';
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
@@ -35,7 +36,7 @@ function App() {
         await dispatch(verifyToken(token));
       }
       
-      // Ensure splash screen shows for at least 2 seconds
+      // Ensure splash screen shows for at least 2 seconds (2000 ms )
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(2000 - elapsedTime, 0);
       

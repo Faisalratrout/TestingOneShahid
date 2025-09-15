@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 // Initialize i18n
 import './i18n';
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
