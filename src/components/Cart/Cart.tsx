@@ -5,6 +5,8 @@ import { RootState } from '../../store';
 import { closeCart, removeFromCart, updateQuantity, clearCart } from '../../store/slices/cartSlice';
 import { addToast } from '../../store/slices/toastSlice';
 import CheckoutModal from '../Checkout/CheckoutModal';
+import OptimizedImage from '../OptimizedImage/OptimizedImage';
+import Button from '../Button/Button';
 import './Cart.css';
 
 const Cart: React.FC = () => {
@@ -58,12 +60,14 @@ const Cart: React.FC = () => {
         <div className="cart-sidebar" onClick={(e) => e.stopPropagation()}>
           <div className="cart-header">
             <h3>{t('cart.shoppingCart')}</h3>
-            <button 
-              className="close-button"
+            <Button 
+              variant="ghost"
+              size="sm"
               onClick={() => dispatch(closeCart())}
+              aria-label="Close cart"
             >
               ×
-            </button>
+            </Button>
           </div>
 
           <div className="cart-content">
@@ -75,7 +79,7 @@ const Cart: React.FC = () => {
               <>
                 {items.map((item) => (
                   <div key={item.id} className="cart-item">
-                    <img 
+                    <OptimizedImage 
                       src={item.product.imageUrl} 
                       alt={item.product.name}
                       className="cart-item-image"

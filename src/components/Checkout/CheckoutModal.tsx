@@ -5,6 +5,8 @@ import { RootState, AppDispatch } from '../../store';
 import { createOrder } from '../../store/slices/ordersSlice';
 import { clearCart, closeCart } from '../../store/slices/cartSlice';
 import { addToast } from '../../store/slices/toastSlice';
+import FormField from '../FormField/FormField';
+import { useFormValidation, validationRules } from '../../utils/validation';
 import './CheckoutModal.css';
 
 interface CheckoutModalProps {
@@ -19,33 +21,64 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [formData, setFormData] = useState({
-
-    fullName: user?.name || '',
-    email: user?.email || '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: 'United States',
-    
-    paymentMethod: 'card',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: '',
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  // Form validation
+  const validation = useFormValidation(
+    {
+      fullName: user?.name || '',
+      email: user?.email || '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      paymentMethod: 'card',
+      cardNumber: '',
+      expiryDate: '',
+      cvv: '',
+      nameOnCard: ''
+    },
+    {
+      fullName: validationRules.name,
+      email: validationRules.email,
+      phone: validationRules.phone,
+      address: validationRules.address,
+      city: { required: true, minLength: 2, maxLength: 50 },
+      state: { required: true, minLength: 2, maxLength: 50 },
+      zipCode: { 
+        required: true, 
+        pattern: /^\d{5}(-\d{4})?$/,
+        custom: (value: string) => {
+          if (value && !/^\d{5}(-\d{4})?$/.test(value)) {
+            return 'ZIP code must be in format 12345 or 12345-6789';
+          }
+          return null;
+        }
+      },
+      paymentMethod: { required: true },
+      cardNumber: validationRules.cardNumber,
+      expiryDate: validationRules.expiryDate,
+      cvv: validationRules.cvv,
+      nameOnCard: { 
+        required: true, 
+        minLength: 2, 
+        pattern: /^[a-zA-Z\s]+$/,
+        custom: (value: string) => {
+          if (value && !/^[a-zA-Z\s]+$/.test(value)) {
+            return 'Cardholder name can only contain letters and spaces';
+          }
+          return null;
+        }
+      }
+    }
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validation.validateAllFields()) {
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
@@ -53,18 +86,18 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
         items: items,
         total: totalAmount,
         customerInfo: {
-          name: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
+          name: validation.formData.fullName,
+          email: validation.formData.email,
+          phone: validation.formData.phone,
         },
         shippingAddress: {
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zipCode: formData.zipCode,
-          country: formData.country,
+          address: validation.formData.address,
+          city: validation.formData.city,
+          state: validation.formData.state,
+          zipCode: validation.formData.zipCode,
+          country: 'US',
         },
-        paymentMethod: formData.paymentMethod,
+        paymentMethod: 'card',
       };
 
       await dispatch(createOrder(orderData)).unwrap();
@@ -127,22 +160,28 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
               <h3>{t('checkout.shippingAddress')}</h3>
               <div className="form-row">
                 <div className="form-group">
-                  <label>{t('checkout.fullName')} *</label>
-                  <input
+                  <FormField
                     type="text"
                     name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
+                    label={t('checkout.fullName')}
+                    value={validation.formData.fullName}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.fullName}
+                    touched={validation.touched.fullName}
                     required
                   />
                 </div>
                 <div className="form-group">
-                  <label>{t('checkout.email')} *</label>
-                  <input
+                  <FormField
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
+                    label={t('checkout.email')}
+                    value={validation.formData.email}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.email}
+                    touched={validation.touched.email}
                     required
                   />
                 </div>
@@ -150,24 +189,30 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
               
               <div className="form-row">
                 <div className="form-group">
-                  <label>{t('checkout.phone')} *</label>
-                  <input
+                  <FormField
                     type="tel"
                     name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
+                    label={t('checkout.phone')}
+                    value={validation.formData.phone}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.phone}
+                    touched={validation.touched.phone}
                     required
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>{t('checkout.address')} *</label>
-                <input
+                <FormField
                   type="text"
                   name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
+                  label={t('checkout.address')}
+                  value={validation.formData.address}
+                  onChange={validation.handleChange}
+                  onBlur={validation.handleBlur}
+                  errors={validation.errors.address}
+                  touched={validation.touched.address}
                   placeholder={t('checkout.streetAddress')}
                   required
                 />
@@ -175,32 +220,41 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>{t('checkout.city')} *</label>
-                  <input
+                  <FormField
                     type="text"
                     name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
+                    label={t('checkout.city')}
+                    value={validation.formData.city}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.city}
+                    touched={validation.touched.city}
                     required
                   />
                 </div>
                 <div className="form-group">
-                  <label>{t('checkout.state')} *</label>
-                  <input
+                  <FormField
                     type="text"
                     name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
+                    label={t('checkout.state')}
+                    value={validation.formData.state}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.state}
+                    touched={validation.touched.state}
                     required
                   />
                 </div>
                 <div className="form-group">
-                  <label>{t('checkout.zipCode')} *</label>
-                  <input
+                  <FormField
                     type="text"
                     name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleInputChange}
+                    label={t('checkout.zipCode')}
+                    value={validation.formData.zipCode}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    errors={validation.errors.zipCode}
+                    touched={validation.touched.zipCode}
                     required
                   />
                 </div>
@@ -215,8 +269,8 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                     type="radio"
                     name="paymentMethod"
                     value="card"
-                    checked={formData.paymentMethod === 'card'}
-                    onChange={handleInputChange}
+                    checked={validation.formData.paymentMethod === 'card'}
+                    onChange={(e) => validation.handleChange('paymentMethod', e.target.value)}
                   />
                   <span>{t('checkout.creditCard')}</span>
                 </label>
@@ -225,32 +279,38 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                     type="radio"
                     name="paymentMethod"
                     value="paypal"
-                    checked={formData.paymentMethod === 'paypal'}
-                    onChange={handleInputChange}
+                    checked={validation.formData.paymentMethod === 'paypal'}
+                    onChange={(e) => validation.handleChange('paymentMethod', e.target.value)}
                   />
                   <span>{t('checkout.paypal')}</span>
                 </label>
               </div>
 
-              {formData.paymentMethod === 'card' && (
+              {validation.formData.paymentMethod === 'card' && (
                 <>
                   <div className="form-group">
-                    <label>{t('checkout.nameOnCard')} *</label>
-                    <input
+                    <FormField
                       type="text"
                       name="nameOnCard"
-                      value={formData.nameOnCard}
-                      onChange={handleInputChange}
+                      label={t('checkout.nameOnCard')}
+                      value={validation.formData.nameOnCard}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      errors={validation.errors.nameOnCard}
+                      touched={validation.touched.nameOnCard}
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label>{t('checkout.cardNumber')} *</label>
-                    <input
+                    <FormField
                       type="text"
                       name="cardNumber"
-                      value={formData.cardNumber}
-                      onChange={handleInputChange}
+                      label={t('checkout.cardNumber')}
+                      value={validation.formData.cardNumber}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      errors={validation.errors.cardNumber}
+                      touched={validation.touched.cardNumber}
                       placeholder="1234 5678 9012 3456"
                       maxLength={19}
                       required
@@ -258,24 +318,30 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose }) => {
                   </div>
                   <div className="form-row">
                     <div className="form-group">
-                      <label>{t('checkout.expiryDate')} *</label>
-                      <input
+                      <FormField
                         type="text"
                         name="expiryDate"
-                        value={formData.expiryDate}
-                        onChange={handleInputChange}
+                        label={t('checkout.expiryDate')}
+                        value={validation.formData.expiryDate}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        errors={validation.errors.expiryDate}
+                        touched={validation.touched.expiryDate}
                         placeholder="MM/YY"
                         maxLength={5}
                         required
                       />
                     </div>
                     <div className="form-group">
-                      <label>{t('checkout.cvv')} *</label>
-                      <input
+                      <FormField
                         type="text"
                         name="cvv"
-                        value={formData.cvv}
-                        onChange={handleInputChange}
+                        label={t('checkout.cvv')}
+                        value={validation.formData.cvv}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        errors={validation.errors.cvv}
+                        touched={validation.touched.cvv}
                         placeholder="123"
                         maxLength={4}
                         required

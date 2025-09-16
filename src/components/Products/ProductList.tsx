@@ -12,6 +12,8 @@ import {
   resetFilters 
 } from '../../store/slices/productsSlice';
 import ProductCard from './ProductCard';
+import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
+import Button from '../Button/Button';
 import './ProductList.css';
 
 const ProductList: React.FC = () => {
@@ -31,6 +33,7 @@ const ProductList: React.FC = () => {
   const [localSearchTerm, setLocalSearchTerm] = useState('');
 
   // Fetch products and categories on component mount
+  
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchProducts({
@@ -144,25 +147,32 @@ const ProductList: React.FC = () => {
             </div>
           </div>
 
-          <button onClick={handleResetFilters} className="reset-button">
+          <Button 
+            onClick={handleResetFilters} 
+            variant="secondary" 
+            size="sm"
+          >
             {t('common.clearFilters')}
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="products-content">
         {isLoading ? (
-          <div className="loading-state">
-            <div className="loading-spinner"></div>
-            <p>{t('common.loading')} amazing products...</p>
+          <div className="products-grid">
+            <SkeletonLoader type="card" count={8} />
           </div>
         ) : products.length === 0 ? (
           <div className="empty-state">
             <h2>🔍 No products found</h2>
             <p>Try adjusting your search or filters</p>
-            <button onClick={handleResetFilters} className="reset-button">
+            <Button 
+              onClick={handleResetFilters} 
+              variant="primary" 
+              size="md"
+            >
               {t('common.clearFilters')}
-            </button>
+            </Button>
           </div>
         ) : (
           <>

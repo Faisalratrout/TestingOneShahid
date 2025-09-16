@@ -4,62 +4,73 @@ import { useTranslation } from 'react-i18next';
 import { loginUser, registerUser } from '../../store/slices/authSlice';
 import { RootState, AppDispatch } from '../../store';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
+import FormField from '../FormField/FormField';
+import Button from '../Button/Button';
+import { useFormValidation, validationRules } from '../../utils/validation';
 import './Login.css';
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
   const [isSignupMode, setIsSignupMode] = useState(false);
   
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading, error } = useSelector((state: RootState) => state.auth);
 
+  const loginValidation = useFormValidation(
+    { email: '', password: '' },
+    {
+      email: validationRules.email,
+      password: { required: true, minLength: 1 } 
+    }
+  );
+
+  const signupValidation = useFormValidation(
+    { name: '', email: '', password: '', confirmPassword: '' },
+    {
+      name: validationRules.name,
+      email: validationRules.email,
+      password: validationRules.password,
+      confirmPassword: {
+        required: true,
+        custom: (value: string) => {
+          if (value !== signupValidation.formData.password) {
+            return 'Passwords do not match';
+          }
+          return null;
+        }
+      }
+    }
+  );
+
+  const currentValidation = isSignupMode ? signupValidation : loginValidation;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!email || !password) {
-      alert(t('validation.fillAllFields'));
+    if (!currentValidation.validateAllFields()) {
       return;
     }
     
     if (isSignupMode) {
-      // Signup validation
-      if (!name.trim()) {
-        alert(t('validation.enterName'));
-        return;
-      }
-      if (password !== confirmPassword) {
-        alert(t('validation.passwordsNotMatch'));
-        return;
-      }
-      if (password.length < 6) {
-        alert(t('validation.passwordMinLength'));
-        return;
-      }
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        alert(t('validation.invalidEmail'));
-        return;
-      }
-      
-      // Dispatch registration
-      dispatch(registerUser({ name: name.trim(), email: email.toLowerCase(), password }));
+      const { name, email, password } = signupValidation.formData;
+      dispatch(registerUser({ 
+        name: name.trim(), 
+        email: email.toLowerCase().trim(), 
+        password 
+      }));
     } else {
-      // Regular login
-      dispatch(loginUser({ email: email.toLowerCase(), password }));
+      const { email, password } = loginValidation.formData;
+      dispatch(loginUser({ 
+        email: email.toLowerCase().trim(), 
+        password 
+      }));
     }
   };
 
   const toggleMode = () => {
     setIsSignupMode(!isSignupMode);
-    // Clear form when switching modes
-    setEmail('');
-    setPassword('');
-    setName('');
-    setConfirmPassword('');
+    loginValidation.resetForm();
+    signupValidation.resetForm();
   };
 
   return (
@@ -78,74 +89,93 @@ const Login: React.FC = () => {
         
         <form onSubmit={handleSubmit}>
           {isSignupMode && (
-            <div className="form-group">
-              <label htmlFor="name">{t('auth.fullName')}:</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={isLoading}
-                placeholder={t('auth.enterFullName')}
-              />
-            </div>
+            <FormField
+              label={t('auth.fullName')}
+              name="name"
+              type="text"
+              value={signupValidation.formData.name}
+              onChange={signupValidation.handleChange}
+              onBlur={signupValidation.handleBlur}
+              errors={signupValidation.errors.name}
+              touched={signupValidation.touched.name}
+              placeholder={t('auth.enterFullName')}
+              required
+              disabled={isLoading}
+              autoComplete="name"
+            />
           )}
           
-          <div className="form-group">
-            <label htmlFor="email">{t('auth.email')}:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              placeholder={t('auth.enterEmail')}
-            />
-          </div>
+          <FormField
+            label={t('auth.email')}
+            name="email"
+            type="email"
+            value={currentValidation.formData.email}
+            onChange={currentValidation.handleChange}
+            onBlur={currentValidation.handleBlur}
+            errors={currentValidation.errors.email}
+            touched={currentValidation.touched.email}
+            placeholder={t('auth.enterEmail')}
+            required
+            disabled={isLoading}
+            autoComplete="email"
+          />
           
-          <div className="form-group">
-            <label htmlFor="password">{t('auth.password')}:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
-              placeholder={t('auth.enterPassword')}
-            />
-          </div>
-          
+          <FormField
+            label={t('auth.password')}
+            name="password"
+            type="password"
+            value={currentValidation.formData.password}
+            onChange={currentValidation.handleChange}
+            onBlur={currentValidation.handleBlur}
+            errors={currentValidation.errors.password}
+            touched={currentValidation.touched.password}
+            placeholder={t('auth.enterPassword')}
+            required
+            disabled={isLoading}
+            autoComplete={isSignupMode ? "new-password" : "current-password"}
+          />
+
           {isSignupMode && (
-            <div className="form-group">
-              <label htmlFor="confirmPassword">{t('auth.confirmPassword')}:</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={isLoading}
-                placeholder={t('auth.confirmYourPassword')}
-              />
-            </div>
+            <FormField
+              label={t('auth.confirmPassword')}
+              name="confirmPassword"
+              type="password"
+              value={signupValidation.formData.confirmPassword}
+              onChange={signupValidation.handleChange}
+              onBlur={signupValidation.handleBlur}
+              errors={signupValidation.errors.confirmPassword}
+              touched={signupValidation.touched.confirmPassword}
+              placeholder={t('auth.confirmPasswordPlaceholder')}
+              required
+              disabled={isLoading}
+              autoComplete="new-password"
+            />
           )}
           
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? (isSignupMode ? t('auth.signingUp') : t('auth.loggingIn')) : (isSignupMode ? t('auth.signup') : t('auth.login'))}
-          </button>
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={isLoading || currentValidation.hasErrors}
+            isLoading={isLoading}
+          >
+            {isSignupMode ? t('auth.signup') : t('auth.login')}
+          </Button>
         </form>
         
         <div className="auth-toggle">
           <p>
             {isSignupMode ? t('auth.alreadyHaveAccount') : t('auth.noAccount')}
             {' '}
-            <button 
+            <Button
               type="button" 
+              variant="ghost"
+              size="sm"
               onClick={toggleMode} 
               disabled={isLoading}
-              className="toggle-link"
             >
               {isSignupMode ? t('auth.login') : t('auth.signup')}
-            </button>
+            </Button>
           </p>
         </div>
         

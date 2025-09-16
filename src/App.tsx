@@ -8,6 +8,7 @@ import Login from './components/Auth/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import ToastContainer from './components/Toast/ToastContainer';
 import SplashScreen from './components/SplashScreen/SplashScreen';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import './App.css';
 
 function App() {
@@ -64,25 +65,27 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route 
-            path="/login" 
-            element={user ? <Navigate to="/dashboard" /> : <Login />} 
-          />
-          <Route 
-            path="/dashboard" 
-            element={user ? <Dashboard /> : <Navigate to="/login" />} 
-          />
-          <Route 
-            path="/" 
-            element={<Navigate to={user ? "/dashboard" : "/login"} />} 
-          />
-        </Routes>
-        <ToastContainer />
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route 
+              path="/login" 
+              element={user ? <Navigate to="/dashboard" /> : <Login />} 
+            />
+            <Route 
+              path="/dashboard" 
+              element={user ? <Dashboard /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/" 
+              element={<Navigate to={user ? "/dashboard" : "/login"} />} 
+            />
+          </Routes>
+          <ToastContainer />
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

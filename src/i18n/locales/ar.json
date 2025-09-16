@@ -16,7 +16,8 @@
     "clearFilters": "إلغاء التصفية",
     "next": "التالي",
     "previous": "السابق",
-    "welcome": "مرحباً"
+    "welcome": "مرحباً",
+    "locale": "ar-SA"
   },
   "splash": {
     "title": "لوحة التجارة الإلكترونية",
@@ -53,7 +54,8 @@
     "analytics": "التحليلات",
     "products": "المنتجات",
     "orders": "الطلبات",
-    "cart": "السلة"
+    "cart": "السلة",
+    "orderCount": "{{count}} طلب"
   },
   "analytics": {
     "title": "لوحة التحليلات",

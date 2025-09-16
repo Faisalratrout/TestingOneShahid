@@ -1,0 +1,111 @@
+.form-field {
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.form-field__label {
+  display: block;
+  margin-bottom: var(--spacing-xs, 0.5rem);
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+  font-size: 0.875rem;
+}
+
+.form-field__required {
+  color: var(--color-error, #dc3545);
+  margin-left: 0.25rem;
+}
+
+.form-field__input {
+  width: 100%;
+  padding: var(--spacing-sm, 0.75rem);
+  border: 2px solid var(--color-border, #e1e5e9);
+  border-radius: var(--border-radius, 8px);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background-color: var(--color-background-secondary, #ffffff);
+  color: var(--color-text-primary, #333);
+}
+
+.form-field__input:focus {
+  outline: none;
+  border-color: var(--color-primary, #007bff);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha, rgba(0, 123, 255, 0.1));
+}
+
+.form-field__input:disabled {
+  background-color: var(--color-background-disabled, #f8f9fa);
+  color: var(--color-text-disabled, #6c757d);
+  cursor: not-allowed;
+}
+
+.form-field__input--error {
+  border-color: var(--color-error, #dc3545);
+}
+
+.form-field__input--error:focus {
+  border-color: var(--color-error, #dc3545);
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.form-field__char-count {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #6c757d);
+  text-align: right;
+}
+
+.form-field__errors {
+  margin-top: 0.5rem;
+}
+
+.form-field__error {
+  display: block;
+  color: var(--color-error, #dc3545);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-field__error:before {
+  content: "⚠ ";
+  margin-right: 0.25rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .form-field__input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-field__input {
+    border-width: 3px;
+  }
+  
+  .form-field__input--error {
+    border-color: #ff0000;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .form-field__label {
+    color: #f8f9fa;
+  }
+  
+  .form-field__input {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #f8f9fa;
+  }
+  
+  .form-field__input:focus {
+    border-color: #63b3ed;
+  }
+  
+  .form-field__char-count {
+    color: #a0aec0;
+  }
+}

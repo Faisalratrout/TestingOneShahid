@@ -100,6 +100,23 @@
   font-weight: normal;
 }
 
+.count-badge {
+  display: inline-block;
+  background: #007bff;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  margin-left: 0.5rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.nav-button.active .count-badge {
+  background: #0056b3;
+}
+
 .checkout-nav-button {
   background: linear-gradient(135deg, #28a745, #20c997);
   color: white;

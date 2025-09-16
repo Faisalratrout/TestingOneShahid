@@ -16,7 +16,8 @@
     "clearFilters": "Clear Filters",
     "next": "Next",
     "previous": "Previous",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "locale": "en-US"
   },
   "splash": {
     "title": "E-Commerce Dashboard",
@@ -48,12 +49,36 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "passwordMinLength": "Password must be at least 6 characters"
   },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordMustContainLettersAndNumbers": "Password must contain both letters and numbers",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "nameTooShort": "Name must be at least 2 characters",
+    "nameInvalid": "Name can only contain letters and spaces",
+    "phoneTooShort": "Phone number must have at least 10 digits",
+    "phoneInvalid": "Please enter a valid phone number",
+    "addressTooShort": "Address must be at least 10 characters",
+    "cardNumberInvalid": "Card number must be 16 digits",
+    "cvvInvalid": "CVV must be 3 or 4 digits",
+    "cardExpired": "Card has expired",
+    "expiryDateInvalid": "Please enter expiry date in MM/YY format",
+    "priceInvalid": "Please enter a valid price",
+    "quantityInvalid": "Please enter a valid quantity",
+    "fillAllFields": "Please fill in all required fields",
+    "invalidFormat": "Invalid format",
+    "enterName": "Please enter your name",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordMinLength": "Password must be at least 6 characters"
+  },
   "dashboard": {
     "title": "E-Commerce Dashboard",
     "analytics": "Analytics",
     "products": "Products",
     "orders": "Orders",
-    "cart": "Cart"
+    "cart": "Cart",
+    "orderCount": "{{count}} orders"
   },
   "analytics": {
     "title": "Analytics Dashboard",
@@ -188,16 +213,7 @@
     "shipTo": "Ship to"
   },
   "toasts": {
-    "addedToCart": "{{product}} added to cart!",
-    "quantityUpdated": "{{product}} quantity updated!",
-    "removedFromCart": "{{product}} removed from cart!"
-  },
-  "validation": {
-    "fillAllFields": "Please fill in all fields",
-    "enterName": "Please enter your name",
-    "passwordsNotMatch": "Passwords do not match",
-    "passwordMinLength": "Password must be at least 6 characters",
-    "invalidEmail": "Please enter a valid email address"
+    "addedToCart": "{{product}} added to cart!"
   }
-  
 }
+

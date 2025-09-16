@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
 import { Product } from '../../types';
+import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
 import './Analytics.css';
 
 const Analytics: React.FC = () => {
   const { t } = useTranslation();
-  const { orders } = useSelector((state: RootState) => state.orders);
+  const { orders, isLoading } = useSelector((state: RootState) => state.orders);
   const { products } = useSelector((state: RootState) => state.products);
 
   // Calculate analytics data
@@ -84,33 +85,44 @@ const Analytics: React.FC = () => {
       </div>
 
       <div className="stats-grid">
-        <StatCard
-          title={t('analytics.totalRevenue')}
-          value={formatCurrency(analytics.totalRevenue)}
-          change={`+12.5% ${t('analytics.fromLastMonth')}`}
-          icon="💰"
-          color="green"
-        />
-        <StatCard
-          title={t('analytics.totalOrders')}
-          value={analytics.totalOrders}
-          change={`+8.3% ${t('analytics.fromLastMonth')}`}
-          icon="📦"
-          color="blue"
-        />
-        <StatCard
-          title={t('analytics.averageOrderValue')}
-          value={formatCurrency(analytics.averageOrderValue)}
-          change={`+5.2% ${t('analytics.fromLastMonth')}`}
-          icon="🛒"
-          color="purple"
-        />
-        <StatCard
-          title={t('analytics.productsSold')}
-          value={analytics.totalProducts}
-          icon="📊"
-          color="orange"
-        />
+        {isLoading ? (
+          <>
+            <SkeletonLoader type="card" />
+            <SkeletonLoader type="card" />
+            <SkeletonLoader type="card" />
+            <SkeletonLoader type="card" />
+          </>
+        ) : (
+          <>
+            <StatCard
+              title={t('analytics.totalRevenue')}
+              value={formatCurrency(analytics.totalRevenue)}
+              change={`+12.5% ${t('analytics.fromLastMonth')}`}
+              icon="💰"
+              color="green"
+            />
+            <StatCard
+              title={t('analytics.totalOrders')}
+              value={analytics.totalOrders}
+              change={`+8.3% ${t('analytics.fromLastMonth')}`}
+              icon="📦"
+              color="blue"
+            />
+            <StatCard
+              title={t('analytics.averageOrderValue')}
+              value={formatCurrency(analytics.averageOrderValue)}
+              change={`+5.2% ${t('analytics.fromLastMonth')}`}
+              icon="🛒"
+              color="purple"
+            />
+            <StatCard
+              title={t('analytics.productsSold')}
+              value={analytics.totalProducts}
+              icon="📊"
+              color="orange"
+            />
+          </>
+        )}
       </div>
 
       <div className="analytics-content">

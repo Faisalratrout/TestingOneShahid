@@ -5,6 +5,8 @@ import { Product } from '../../types';
 import { addToCart, updateQuantity, removeFromCart, openCart } from '../../store/slices/cartSlice';
 import { addToast } from '../../store/slices/toastSlice';
 import { RootState, AppDispatch } from '../../store';
+import OptimizedImage from '../OptimizedImage/OptimizedImage';
+import Button from '../Button/Button';
 import './ProductCard.css';
 
 interface ProductCardProps {
@@ -86,12 +88,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="product-card">
       <div className="product-image">
-        <img 
+        <OptimizedImage 
           src={product.imageUrl} 
           alt={product.name}
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400';
-          }}
+          fallback="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400"
         />
         {!product.inStock && <div className="out-of-stock-badge">{t('products.outOfStock')}</div>}
         {quantity > 0 && <div className="in-cart-badge">{quantity} in cart</div>}
@@ -116,35 +116,41 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {quantity > 0 ? (
             <div className="quantity-controls">
               <div className="quantity-display">
-                <button 
-                  className="quantity-btn decrease"
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={handleDecreaseQuantity}
+                  aria-label="Decrease quantity"
                 >
                   −
-                </button>
+                </Button>
                 <span className="quantity-number">{quantity}</span>
-                <button 
-                  className="quantity-btn increase"
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={handleIncreaseQuantity}
+                  aria-label="Increase quantity"
                 >
                   +
-                </button>
+                </Button>
               </div>
-              <button 
-                className="view-cart-btn"
+              <Button 
+                variant="secondary"
+                size="sm"
                 onClick={handleViewCart}
               >
                 {t('cart.viewCart')}
-              </button>
+              </Button>
             </div>
           ) : (
-            <button 
-              className={`add-to-cart-btn ${!product.inStock ? 'disabled' : ''}`}
+            <Button 
+              variant="primary"
+              size="md"
               onClick={handleAddToCart}
               disabled={!product.inStock}
             >
               {product.inStock ? t('products.addToCart') : t('products.outOfStock')}
-            </button>
+            </Button>
           )}
         </div>
         

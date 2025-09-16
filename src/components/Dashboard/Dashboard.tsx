@@ -11,6 +11,7 @@ import Analytics from '../Analytics/Analytics';
 import Cart from '../Cart/Cart';
 import CartButton from '../Cart/CartButton';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
+import Button from '../Button/Button';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
@@ -53,9 +54,13 @@ const Dashboard: React.FC = () => {
             <LanguageSwitcher />
             <span className="welcome-text">{t('common.welcome')}, {user?.name}!</span>
             <CartButton />
-            <button className="logout-button" onClick={handleLogout}>
+            <Button 
+              variant="danger"
+              size="sm"
+              onClick={handleLogout}
+            >
               {t('auth.logout')}
-            </button>
+            </Button>
           </div>
         </div>
       </header>
@@ -79,13 +84,26 @@ const Dashboard: React.FC = () => {
               count: orders.length > 0 ? orders.length : null 
             }
           ].map(({ key, label, count }) => (
-            <button
+            <Button
               key={key}
               onClick={() => setActiveTab(key)}
+              variant={activeTab === key ? 'primary' : 'ghost'}
+              size="md"
               className={`nav-button ${activeTab === key ? 'active' : ''}`}
             >
-              {label} {count && <span className="nav-count">{count}</span>}
-            </button>
+              {label}
+              {count && (
+                <>
+                  {' '}
+                  <span 
+                    className="count-badge"
+                    aria-hidden="true"
+                  >
+                    {new Intl.NumberFormat(t('common.locale')).format(count)}
+                  </span>
+                </>
+              )}
+            </Button>
           ))}
         </div>
       </nav>

@@ -19,7 +19,8 @@
     "previous": "Précédent",
     "close": "Fermer",
     "view": "Voir",
-    "update": "Mettre à jour"
+    "update": "Mettre à jour",
+    "locale": "fr-FR"
   },
   "splash": {
     "title": "Tableau de bord e-commerce",
@@ -58,10 +59,13 @@
     "totalRevenue": "Chiffre d'affaires total",
     "totalOrders": "Commandes totales",
     "totalProducts": "Produits totaux",
-    "totalCustomers": "Clients totaux",
     "recentOrders": "Commandes récentes",
     "topProducts": "Produits les plus vendus",
     "analytics": "Analyses",
+    "products": "Produits",
+    "orders": "Commandes",
+    "cart": "Panier",
+    "orderCount": "{{count}} commandes",
     "quickActions": "Actions rapides",
     "addProduct": "Ajouter un produit",
     "manageOrders": "Gérer les commandes",
