@@ -195,21 +195,37 @@
   border-top: 1px solid #e9ecef;
 }
 
-.btn-cancel,
+
 .btn-place-order {
   flex: 1;
   padding: 14px 24px;
   border: none;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 48px;
 }
 
 .btn-cancel {
-  background: #6c757d;
-  color: white;
+  flex: 0 0 auto;
+  width: 80px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .btn-cancel:hover:not(:disabled) {
@@ -218,12 +234,12 @@
 }
 
 .btn-place-order {
-  background: linear-gradient(135deg, #28a745, #1e7e34);
+  background: green ;
   color: white;
 }
 
 .btn-place-order:hover:not(:disabled) {
-  background: linear-gradient(135deg, #218838, #1a6e29);
+  background: green ;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }

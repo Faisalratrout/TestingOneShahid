@@ -289,6 +289,7 @@
 
 .order-details-header {
   margin-bottom: 2rem;
+  text-align: left;
 }
 
 .back-button {
@@ -310,6 +311,7 @@
 .order-title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -456,7 +458,7 @@
   flex-direction: column;
   gap: 1rem;
   max-width: 300px;
-  margin-left: auto;
+  margin: 0 auto;
 }
 
 .summary-line {
